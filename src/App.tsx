@@ -8,26 +8,28 @@ import {Dialogs} from "./components/pages/Dialogs/Dialogs";
 import {News} from "./components/pages/News/News";
 import {Music} from "./components/pages/Music/Music";
 import {Helping} from "./components/pages/Helping/Helping";
-import {StateType} from "./redux/state";
+import {StoreType} from "./redux/state";
 
 type AppPropsType = {
-    state: StateType
-    addPost: () => void
-    updateNewPostText: (newText: string) => void
+    // state: StateType
+    // addPost: () => void
+    // updateNewPostText: (newText: string) => void
+    store:StoreType
 }
 
 function App(props: AppPropsType) {
+    const state=props.store.getState();
 
     return (
         <div className="app-wrapper">
             <Header/>
-            <Navbar navbarPage={props.state.navbarPage}/>
+            <Navbar navbarPage={state.navbarPage}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/' element={<Profile profilePage={props.state.profilePage}
-                                                      updateNewPostText={props.updateNewPostText}
-                                                      addPost={props.addPost}/>}/>
-                    <Route path='/dialogs/*' element={<Dialogs dialogsPage={props.state.dialogsPage}/>}/>
+                    <Route path='/' element={<Profile profilePage={state.profilePage}
+                        //биндом связываем метод с родителем-store -ом
+                                                      dispatch={props.store.dispatch.bind(props.store)}/>}/>
+                    <Route path='/dialogs/*' element={<Dialogs dialogsPage={state.dialogsPage}/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>

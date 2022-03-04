@@ -4,21 +4,22 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {state, updateNewPostText} from './redux/state'
-import {addPost} from "./redux/state";
+import {store} from "./redux/state";
 
-export let rerenderEntireTree=()=>{
+let rerenderEntireTree=()=>{ //нам эту функцию нужно в стейт отдать как колбэк ,чтоб не было циклической зависимости
     ReactDOM.render(
         <React.StrictMode>
             <BrowserRouter>
-                <App  state={state} addPost={addPost} updateNewPostText={updateNewPostText}/>
+                <App store={store}
+
+                />
             </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')
     );
 }
-
-rerenderEntireTree();
+rerenderEntireTree()//вызывыаем эту функцию и потом в параметрах передаем как колбэк
+store.subscribe(rerenderEntireTree);
 
 
 // If you want to start measuring performance in your app, pass a function

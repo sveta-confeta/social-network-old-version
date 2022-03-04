@@ -1,5 +1,4 @@
 import {v1} from "uuid";
-import {rerenderEntireTree} from "../index";
 
 
 export type PostType = {
@@ -16,14 +15,14 @@ export type MessageItemType = {
     text: string
     id: string
 }
-export type FriendItemType={
+export type FriendItemType = {
     id: number
     name_friend: string
-    img_friend:string
+    img_friend: string
 
 }
-export type FriendsDataType={
-    friendsData:Array<FriendItemType>
+export type FriendsDataType = {
+    friendsData: Array<FriendItemType>
 }
 
 export type DialogsItemType = {
@@ -33,39 +32,70 @@ export type DialogsItemType = {
 
 export type ProfileType = {
     profilePosts: Array<PostType>
-    valueTextarea:string
+    valueTextarea: string
 
 }
 export type StateType = {
     profilePage: ProfileType
-    dialogsPage:DialogsItemType
+    dialogsPage: DialogsItemType
     navbarPage: FriendsDataType
 }
-export let state: StateType = {
-    profilePage: {
-        profilePosts: [
-            {id: v1(), message: 'Hi, how are you?', count: 20},
-            {id: v1(), message: 'What are you doing on Saturday?', count: 3},
-            {id: v1(), message: 'By-by', count: 6},
-        ],
-        valueTextarea: '',
-    },
-    dialogsPage: {
-        dialogsItem: [
-            {name: 'Dimych', id: 1},
-            {name: 'Agafon', id: 2},
-            {name: 'Mitrofan', id: 3},
-            {name: 'Fedot', id: 4},
-        ],
-        messagesItem: [
-            {text: 'Hi!!!', id: v1()},
-            {text: 'Have you done motorcycle repairs?', id: v1()},
-            {text: 'We are flying to Odessa tomorrow!', id: v1()},
-        ],
 
-    },
-    navbarPage:{
-        friendsData:[
+export type ActionType=AddPostActionType|UpdateNewPostTextActionType
+
+export type AddPostActionType={
+    type:"ADD-POST"
+}
+
+export type UpdateNewPostTextActionType={
+    type:"UPDATE-NEW-POST-TEXT"
+    newText:string
+}
+
+
+export type StoreType = {
+    _state: StateType
+    subscribe: (callback: () => void) => void
+    _rerenderEntireTree: () => void
+    getState: () => StateType
+    dispatch:(action:ActionType)=>void
+}
+
+// export let addPost=(value:string)=>{
+//
+//    let newPost= {id: v1(), message: value, count:0};
+//     {...state,profilePosts:[...state.profilePage.profilePosts,newPost]}
+//     rerenderEntireTree();
+//
+// }
+
+
+export let store: StoreType = {
+    _state: {
+        profilePage: {
+            profilePosts: [
+                {id: v1(), message: 'Hi, how are you?', count: 20},
+                {id: v1(), message: 'What are you doing on Saturday?', count: 3},
+                {id: v1(), message: 'By-by', count: 6},
+            ],
+            valueTextarea: '',
+        },
+        dialogsPage: {
+            dialogsItem: [
+                {name: 'Dimych', id: 1},
+                {name: 'Agafon', id: 2},
+                {name: 'Mitrofan', id: 3},
+                {name: 'Fedot', id: 4},
+            ],
+            messagesItem: [
+                {text: 'Hi!!!', id: v1()},
+                {text: 'Have you done motorcycle repairs?', id: v1()},
+                {text: 'We are flying to Odessa tomorrow!', id: v1()},
+            ],
+
+        },
+        navbarPage: {
+            friendsData: [
 
                 {
                     id: 1,
@@ -84,27 +114,32 @@ export let state: StateType = {
                     img_friend: 'https://i.pinimg.com/236x/01/fb/3a/01fb3a6472c506046457517b2f2d9a4a--cafe-racer-girl-biker-chick.jpg'
                 },
 
-        ],
+            ],
+        },
+
     },
 
-}
+    getState() {
+        return this._state; //метод который возращает приватный _state
+    },
+    _rerenderEntireTree() {
+    },
 
- // export let addPost=(value:string)=>{
- //
- //    let newPost= {id: v1(), message: value, count:0};
- //     {...state,profilePosts:[...state.profilePage.profilePosts,newPost]}
- //     rerenderEntireTree();
- //
- // }
+    subscribe(callback: () => void) {
+        this._rerenderEntireTree = callback;
+    },
 
-export  const addPost=()=>{
-    let newPost= {id: v1(), message: state.profilePage.valueTextarea, count:0};//строка с содержимым текстареа добавляется в новое сообщение
-    state.profilePage.profilePosts.push(newPost);
-    state.profilePage.valueTextarea=' ';// и зануляетсяa
-    rerenderEntireTree();
-}
+    //передает action -обьект который описывает какое действие совершить.имеет обязательное св-во type:
+    dispatch(action) {
+        if (action.type === "ADD-POST") { //cодержимое  addPost()
+            let newPost = {id: v1(), message: this._state.profilePage.valueTextarea, count: 0};//строка с содержимым текстареа добавляется в новое сообщение
+            this._state.profilePage.profilePosts.push(newPost);
+            this._state.profilePage.valueTextarea = ' ';// и зануляетсяa
+            this._rerenderEntireTree();
+        } else if(action.type === "UPDATE-NEW-POST-TEXT"){  //cодержимое  updateNewPostText(newText: string)
+            this._state.profilePage.valueTextarea = action.newText;  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
+            this._rerenderEntireTree();
+        }
+    }
 
-export const updateNewPostText=(newText:string)=>{
-    state.profilePage.valueTextarea=newText;  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
-    rerenderEntireTree();
 }
