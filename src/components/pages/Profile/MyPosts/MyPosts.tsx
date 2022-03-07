@@ -2,7 +2,7 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
-import {ActionType, PostType} from "../../../../redux/state";
+import {ActionType, addPostAC, onChangeHandlerAC, PostType} from "../../../../redux/state";
 
  type MyPostsPropsType={
      profilePosts:Array<PostType>
@@ -10,11 +10,15 @@ import {ActionType, PostType} from "../../../../redux/state";
      valueTextarea:string
  }
 
+
+
+
+
 export const MyPosts = (props:MyPostsPropsType) => {
 
 
      let clickAddPost = () =>{
-           props.dispatch({type:"ADD-POST"}); //при клике на кнопку активируем эту функцию которая в стейте добавляет содержимое
+           props.dispatch(addPostAC()); //при клике на кнопку активируем эту функцию которая в стейте добавляет содержимое
          //из текстареа в новое сообщение
 
        }
@@ -22,7 +26,7 @@ export const MyPosts = (props:MyPostsPropsType) => {
 
      let onChangeHandler=(e:ChangeEvent<HTMLTextAreaElement>)=>{
          let newText=e.currentTarget.value;
-         props.dispatch({type:"UPDATE-NEW-POST-TEXT",newText})  //отправляем в стейт содержимое текстареа
+         props.dispatch(onChangeHandlerAC(newText))  //отправляем в стейт содержимое текстареа
      }
 
     return (

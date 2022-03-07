@@ -43,14 +43,10 @@ export type StateType = {
 
 export type ActionType=AddPostActionType|UpdateNewPostTextActionType
 
-export type AddPostActionType={
-    type:"ADD-POST"
-}
+export type AddPostActionType= ReturnType<typeof addPostAC>
 
-export type UpdateNewPostTextActionType={
-    type:"UPDATE-NEW-POST-TEXT"
-    newText:string
-}
+export type UpdateNewPostTextActionType= ReturnType<typeof onChangeHandlerAC>
+
 
 
 export type StoreType = {
@@ -142,4 +138,19 @@ export let store: StoreType = {
         }
     }
 
+}
+
+// type addPostACType=ReturnType<typeof addPostAC> ;
+
+export const addPostAC=()=>{
+    return{
+        type:"ADD-POST"
+    } as const
+}
+
+export const onChangeHandlerAC=(newText:string)=>{   //передаем содержимое текстареа
+    return{
+        type:"UPDATE-NEW-POST-TEXT",
+        newText:newText
+    }as const
 }
