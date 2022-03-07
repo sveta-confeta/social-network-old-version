@@ -1,15 +1,13 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
-import { DialogsItemType} from "../../../redux/state";
-
-
-
+import {ActionType, addDialogPostAC, DialogsItemType, onChangeDialogAC} from "../../../redux/state";
 
 
 export type DialogsPropsType = {
-   dialogsPage:DialogsItemType
+    dialogsPage: DialogsItemType
+    dispatch: (action: ActionType) => void
 
 }
 
@@ -29,6 +27,14 @@ export const Dialogs = (props: DialogsPropsType) => {
         )
     })
 
+    const onchangeDialog = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        let newDialog: string = e.currentTarget.value;
+        props.dispatch(onChangeDialogAC(newDialog))
+    }
+
+    const clickAddDialog=()=>{
+        props.dispatch(addDialogPostAC())
+    }
 
 
     return (
@@ -39,6 +45,8 @@ export const Dialogs = (props: DialogsPropsType) => {
 
             <div className={s.messages}>     {/*message*/}
                 {MessagesElement}
+                <textarea className={s.textarea} onChange={onchangeDialog} value={props.dialogsPage.dialogTextarea}/><br/>
+                <button onClick={clickAddDialog}>Добавить сообщение</button>
             </div>
 
 

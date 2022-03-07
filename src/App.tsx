@@ -29,7 +29,8 @@ function App(props: AppPropsType) {
                     <Route path='/' element={<Profile profilePage={state.profilePage}
                         //биндом связываем метод с родителем-store -ом
                                                       dispatch={props.store.dispatch.bind(props.store)}/>}/>
-                    <Route path='/dialogs/*' element={<Dialogs dialogsPage={state.dialogsPage}/>}/>
+                    <Route path='/dialogs/*' element={<Dialogs dispatch={props.store.dispatch.bind(props.store)}
+                        dialogsPage={state.dialogsPage}/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>

@@ -28,6 +28,7 @@ export type FriendsDataType = {
 export type DialogsItemType = {
     dialogsItem: Array<DialogItemType>
     messagesItem: Array<MessageItemType>
+    dialogTextarea:string
 }
 
 export type ProfileType = {
@@ -41,11 +42,15 @@ export type StateType = {
     navbarPage: FriendsDataType
 }
 
-export type ActionType=AddPostActionType|UpdateNewPostTextActionType
+export type ActionType=AddPostActionType|UpdateNewPostTextActionType|OnChangeDialogACType|AddDialogPostACType
 
 export type AddPostActionType= ReturnType<typeof addPostAC>
 
 export type UpdateNewPostTextActionType= ReturnType<typeof onChangeHandlerAC>
+
+export type OnChangeDialogACType=ReturnType<typeof onChangeDialogAC>
+
+export type AddDialogPostACType=ReturnType<typeof addDialogPostAC>
 
 
 
@@ -87,7 +92,9 @@ export let store: StoreType = {
                 {text: 'Hi!!!', id: v1()},
                 {text: 'Have you done motorcycle repairs?', id: v1()},
                 {text: 'We are flying to Odessa tomorrow!', id: v1()},
+
             ],
+            dialogTextarea: '',
 
         },
         navbarPage: {
@@ -135,12 +142,20 @@ export let store: StoreType = {
         } else if(action.type === "UPDATE-NEW-POST-TEXT"){  //cодержимое  updateNewPostText(newText: string)
             this._state.profilePage.valueTextarea = action.newText;  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
             this._rerenderEntireTree();
+        } else if (action.type ==='NEW-DIALOG-POST') {
+            let newPost = {text: this._state.dialogsPage.dialogTextarea, id: v1()};
+            this._state.dialogsPage.messagesItem.push(newPost);
+            this._state.dialogsPage.dialogTextarea = "";
+            this._rerenderEntireTree();
+        }else if (action.type ==="UPDATE-NEW-DIALOG-TEXT") {
+            this._state.dialogsPage.dialogTextarea = action.newText;
+            this._rerenderEntireTree();
         }
-    }
+}
 
 }
 
-// type addPostACType=ReturnType<typeof addPostAC> ;
+
 
 export const addPostAC=()=>{
     return{
@@ -153,4 +168,15 @@ export const onChangeHandlerAC=(newText:string)=>{   //передаем соде
         type:"UPDATE-NEW-POST-TEXT",
         newText:newText
     }as const
+}
+export const onChangeDialogAC=(newDialog:string)=>{   //передаем содержимое текстареа
+    return{
+        type:"UPDATE-NEW-DIALOG-TEXT",
+        newText:newDialog
+    }as const
+}
+export const addDialogPostAC=()=>{
+    return{
+        type:'NEW-DIALOG-POST'
+    } as const
 }

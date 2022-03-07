@@ -28,3 +28,8 @@
 .item .active{
     color: aquamarine;
 }
+.textarea{
+    max-width: 350px;
+    height: 30px;
+    margin-top: 50px;
+}
