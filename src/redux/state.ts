@@ -1,4 +1,7 @@
 import {v1} from "uuid";
+import {profileReducer} from "./profileReducer";
+import {dialogReducer} from "./dialogReducer";
+import {friendsReducer} from "./friendsReducer";
 
 
 export type PostType = {
@@ -134,23 +137,12 @@ export let store: StoreType = {
 
     //передает action -обьект который описывает какое действие совершить.имеет обязательное св-во type:
     dispatch(action) {
-        if (action.type === "ADD-POST") { //cодержимое  addPost()
-            let newPost = {id: v1(), message: this._state.profilePage.valueTextarea, count: 0};//строка с содержимым текстареа добавляется в новое сообщение
-            this._state.profilePage.profilePosts.push(newPost);
-            this._state.profilePage.valueTextarea = ' ';// и зануляетсяa
-            this._rerenderEntireTree();
-        } else if(action.type === "UPDATE-NEW-POST-TEXT"){  //cодержимое  updateNewPostText(newText: string)
-            this._state.profilePage.valueTextarea = action.newText;  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
-            this._rerenderEntireTree();
-        } else if (action.type ==='NEW-DIALOG-POST') {
-            let newPost = {text: this._state.dialogsPage.dialogTextarea, id: v1()};
-            this._state.dialogsPage.messagesItem.push(newPost);
-            this._state.dialogsPage.dialogTextarea = "";
-            this._rerenderEntireTree();
-        }else if (action.type ==="UPDATE-NEW-DIALOG-TEXT") {
-            this._state.dialogsPage.dialogTextarea = action.newText;
-            this._rerenderEntireTree();
-        }
+        this._state.profilePage=profileReducer( this._state.profilePage,action);
+        this._state.dialogsPage=dialogReducer( this._state.dialogsPage,action);
+        this._state.navbarPage=friendsReducer(this._state.navbarPage,action);
+
+        this._rerenderEntireTree();
+
 }
 
 }
