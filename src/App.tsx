@@ -8,18 +8,14 @@ import {Dialogs} from "./components/pages/Dialogs/Dialogs";
 import {News} from "./components/pages/News/News";
 import {Music} from "./components/pages/Music/Music";
 import {Helping} from "./components/pages/Helping/Helping";
-import {StoreType} from "./redux/state";
+import {store} from "./redux/redux-store";
 
-type AppPropsType = {
-    // state: StateType
-    // addPost: () => void
-    // updateNewPostText: (newText: string) => void
-    store:StoreType
-}
+// type AppPropsType = {
+//     store:StoreType
+// }
 
-function App(props: AppPropsType) {
-    const state=props.store.getState();
-
+function App() {
+    const state=store.getState();
     return (
         <div className="app-wrapper">
             <Header/>
@@ -28,8 +24,8 @@ function App(props: AppPropsType) {
                 <Routes>
                     <Route path='/' element={<Profile profilePage={state.profilePage}
                         //биндом связываем метод с родителем-store -ом
-                                                      dispatch={props.store.dispatch.bind(props.store)}/>}/>
-                    <Route path='/dialogs/*' element={<Dialogs dispatch={props.store.dispatch.bind(props.store)}
+                                                      dispatch={store.dispatch.bind(store)}/>}/>
+                    <Route path='/dialogs/*' element={<Dialogs dispatch={store.dispatch.bind(store)}
                         dialogsPage={state.dialogsPage}/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>

@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {profileReducer} from "./profileReducer";
-import {dialogReducer} from "./dialogReducer";
+import {AddPostActionType, profileReducer, UpdateNewPostTextActionType} from "./profileReducer";
+import {AddDialogPostACType, dialogReducer, OnChangeDialogACType} from "./dialogReducer";
 import {friendsReducer} from "./friendsReducer";
 
 
@@ -46,16 +46,6 @@ export type StateType = {
 }
 
 export type ActionType=AddPostActionType|UpdateNewPostTextActionType|OnChangeDialogACType|AddDialogPostACType
-
-export type AddPostActionType= ReturnType<typeof addPostAC>
-
-export type UpdateNewPostTextActionType= ReturnType<typeof onChangeHandlerAC>
-
-export type OnChangeDialogACType=ReturnType<typeof onChangeDialogAC>
-
-export type AddDialogPostACType=ReturnType<typeof addDialogPostAC>
-
-
 
 export type StoreType = {
     _state: StateType
@@ -149,26 +139,5 @@ export let store: StoreType = {
 
 
 
-export const addPostAC=()=>{
-    return{
-        type:"ADD-POST"
-    } as const
-}
 
-export const onChangeHandlerAC=(newText:string)=>{   //передаем содержимое текстареа
-    return{
-        type:"UPDATE-NEW-POST-TEXT",
-        newText:newText
-    }as const
-}
-export const onChangeDialogAC=(newDialog:string)=>{   //передаем содержимое текстареа
-    return{
-        type:"UPDATE-NEW-DIALOG-TEXT",
-        newText:newDialog
-    }as const
-}
-export const addDialogPostAC=()=>{
-    return{
-        type:'NEW-DIALOG-POST'
-    } as const
-}
+
