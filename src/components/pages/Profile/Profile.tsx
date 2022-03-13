@@ -1,7 +1,7 @@
 import React from "react";
 import s from './Profile.module.css';
-import {MyPosts} from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
+import {MyPostsContainer} from "./MyPosts/MyPosts.Container";
 import {ActionType, ProfileType} from "../../../redux/state";
 
 export type ProfilePropsType = {
@@ -13,8 +13,10 @@ export const Profile = (props: ProfilePropsType) => {
     return (
         <div className={s.content}>
             <ProfileInfo/>
-            <MyPosts profilePosts={props.profilePage.profilePosts} valueTextarea={props.profilePage.valueTextarea}
-                     dispatch={props.dispatch}/>
+            <MyPostsContainer
+                profilePosts={props.profilePage.profilePosts} valueTextarea={props.profilePage.valueTextarea}
+                     dispatch={props.dispatch}
+            />
         </div>
     )
 }

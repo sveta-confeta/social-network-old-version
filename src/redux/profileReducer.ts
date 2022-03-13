@@ -16,7 +16,6 @@ export const profileReducer = (state: ProfileType=initialState,action:ActionType
     //теперь у нас под именем state-  _state.profilePage
     switch (action.type){
         case "ADD-POST" :{ //cодержимое  addPost()
-            debugger
             let newPost = {id: v1(), message: state.valueTextarea, count: 0};//строка с содержимым текстареа добавляется в новое сообщение
             state.profilePosts.push(newPost);
             state.valueTextarea = ' ';// и зануляетсяa

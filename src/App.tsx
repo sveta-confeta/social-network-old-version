@@ -9,10 +9,9 @@ import {News} from "./components/pages/News/News";
 import {Music} from "./components/pages/Music/Music";
 import {Helping} from "./components/pages/Helping/Helping";
 import {store} from "./redux/redux-store";
+import {DialogsContainer} from "./components/pages/Dialogs/DialogsContainer";
 
-// type AppPropsType = {
-//     store:StoreType
-// }
+
 
 function App() {
     const state=store.getState();
@@ -22,10 +21,12 @@ function App() {
             <Navbar navbarPage={state.navbarPage}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/' element={<Profile profilePage={state.profilePage}
+                    <Route path='/' element={<Profile
+                        profilePage={state.profilePage}
                         //биндом связываем метод с родителем-store -ом
-                                                      dispatch={store.dispatch.bind(store)}/>}/>
-                    <Route path='/dialogs/*' element={<Dialogs dispatch={store.dispatch.bind(store)}
+                                                      dispatch={store.dispatch.bind(store)}
+                    />}/>
+                    <Route path='/dialogs/*' element={<DialogsContainer dispatch={store.dispatch.bind(store)}
                         dialogsPage={state.dialogsPage}/>}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>

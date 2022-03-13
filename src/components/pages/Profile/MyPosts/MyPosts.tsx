@@ -2,13 +2,14 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import {Post} from "./Post/Post";
-import {ActionType, PostType} from "../../../../redux/state";
-import {addPostAC, onChangeHandlerAC} from "../../../../redux/profileReducer";
+import {PostType} from "../../../../redux/state";
+
 
  type MyPostsPropsType={
      profilePosts:Array<PostType>
-     dispatch:(action:ActionType)=>void
      valueTextarea:string
+     onChangeHandler:(newText:string)=>void
+     clickAddPost:()=>void
  }
 
 
@@ -19,7 +20,7 @@ export const MyPosts = (props:MyPostsPropsType) => {
 
 
      let clickAddPost = () =>{
-           props.dispatch(addPostAC()); //при клике на кнопку активируем эту функцию которая в стейте добавляет содержимое
+           props.clickAddPost(); //при клике на кнопку активируем эту функцию которая в стейте добавляет содержимое
          //из текстареа в новое сообщение
 
        }
@@ -27,7 +28,8 @@ export const MyPosts = (props:MyPostsPropsType) => {
 
      let onChangeHandler=(e:ChangeEvent<HTMLTextAreaElement>)=>{
          let newText=e.currentTarget.value;
-         props.dispatch(onChangeHandlerAC(newText))  //отправляем в стейт содержимое текстареа
+         props.onChangeHandler(newText) //это вызов из контейнерной и передача в нее параметра
+         // props.dispatch(onChangeHandlerAC(newText))  //отправляем в стейт содержимое текстареа
      }
 
     return (
