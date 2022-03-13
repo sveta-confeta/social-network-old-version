@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {store} from "./redux/redux-store";
 import {Provider} from "react-redux";
+import {store} from "./redux/redux-store";
 
 // let rerenderEntireTree=(state:AppRootStateType)=>{ //нам эту функцию нужно в стейт отдать как колбэк ,чтоб не было циклической зависимости
 ReactDOM.render(

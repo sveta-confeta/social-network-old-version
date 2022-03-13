@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {AddPostActionType, profileReducer, UpdateNewPostTextActionType} from "./profileReducer";
-import {AddDialogPostACType, dialogReducer, OnChangeDialogACType} from "./dialogReducer";
+import {AddDialogPostACType, dialogReducer, OnChangeDialogACType,} from "./dialogReducer";
 import {friendsReducer} from "./friendsReducer";
 
 
@@ -31,7 +31,7 @@ export type FriendsDataType = {
 export type DialogsItemType = {
     dialogsItem: Array<DialogItemType>
     messagesItem: Array<MessageItemType>
-    dialogTextarea:string
+    dialogTextarea: string
 }
 
 export type ProfileType = {
@@ -45,23 +45,15 @@ export type StateType = {
     navbarPage: FriendsDataType
 }
 
-export type ActionType=AddPostActionType|UpdateNewPostTextActionType|OnChangeDialogACType|AddDialogPostACType
+export type ActionType = AddPostActionType | UpdateNewPostTextActionType | OnChangeDialogACType | AddDialogPostACType
 
 export type StoreType = {
     _state: StateType
     subscribe: (callback: () => void) => void
     _rerenderEntireTree: () => void
     getState: () => StateType
-    dispatch:(action:ActionType)=>void
+    dispatch: (action: ActionType) => void
 }
-
-// export let addPost=(value:string)=>{
-//
-//    let newPost= {id: v1(), message: value, count:0};
-//     {...state,profilePosts:[...state.profilePage.profilePosts,newPost]}
-//     rerenderEntireTree();
-//
-// }
 
 
 export let store: StoreType = {
@@ -127,13 +119,15 @@ export let store: StoreType = {
 
     //передает action -обьект который описывает какое действие совершить.имеет обязательное св-во type:
     dispatch(action) {
-        this._state.profilePage=profileReducer( this._state.profilePage,action);
-        this._state.dialogsPage=dialogReducer( this._state.dialogsPage,action);
-        this._state.navbarPage=friendsReducer(this._state.navbarPage,action);
+        //@ts-ignore
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        //@ts-ignore
+        this._state.dialogsPage = dialogReducer(this._state.dialogsPage, action);
+        this._state.navbarPage = friendsReducer(this._state.navbarPage, action);
 
         this._rerenderEntireTree();
 
-}
+    }
 
 }
 

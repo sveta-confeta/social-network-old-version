@@ -1,6 +1,6 @@
 
 import {v1} from "uuid";
-import {ActionType,  ProfileType} from "./state";
+import {  ProfileType} from "./state";
 
 let initialState={
     profilePosts: [
@@ -12,24 +12,25 @@ let initialState={
 }
 
 
-export const profileReducer = (state: ProfileType=initialState,action:ActionType) => { //приходит не весь стейт, а только часть данных нужных этому редьюсеру
+export const profileReducer = (state: ProfileType=initialState,action:ActionType):ProfileType => { //приходит не весь стейт, а только часть данных нужных этому редьюсеру
     //теперь у нас под именем state-  _state.profilePage
     switch (action.type){
         case "ADD-POST" :{ //cодержимое  addPost()
             let newPost = {id: v1(), message: state.valueTextarea, count: 0};//строка с содержимым текстареа добавляется в новое сообщение
-            state.profilePosts.push(newPost);
-            state.valueTextarea = ' ';// и зануляетсяa
-            return state;
+            let newState={...state,profilePosts:[...state.profilePosts,newPost]};
+            newState.valueTextarea = ' ';// и зануляетсяa
+            return newState;
         }
         case "UPDATE-NEW-POST-TEXT": {  //cодержимое  updateNewPostText(newText: string)
-            state.valueTextarea = action.newText;  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
-            return state;
+            return {...state,valueTextarea:state.valueTextarea = action.newText};  //через newText приходит содержимое текстареа ,которое добавляется в пустую строку valueTextarea
+
 
     }
         default: return state;
 
     }}
 
+type ActionType=AddPostActionType| UpdateNewPostTextActionType;
 
 export type AddPostActionType= ReturnType<typeof addPostAC>
 

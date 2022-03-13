@@ -1,9 +1,8 @@
 import React from "react";
-import {DialogItem} from "./DialogItem/DialogItem";
-import {Message} from "./Message/Message";
-import {ActionType, DialogsItemType} from "../../../redux/state";
+import {ActionType, DialogsItemType, StateType} from "../../../redux/state";
 import {addDialogPostAC, onChangeDialogAC} from "../../../redux/dialogReducer";
 import {Dialogs} from "./Dialogs";
+import {connect} from "react-redux";
 
 
 export type DialogsPropsType = {
@@ -13,18 +12,35 @@ export type DialogsPropsType = {
 }
 
 
-export const DialogsContainer = (props: DialogsPropsType) => {
+// export const DialogsContainer = (props: DialogsPropsType) => {
+//
+//     const onchangeDialog = (newDialog:string) => {
+//         props.dispatch(onChangeDialogAC(newDialog))
+//     }
+//
+//     const clickAddDialog=()=>{
+//         props.dispatch(addDialogPostAC())
+//     }
+//
+//
+//     return (
+//       <Dialogs dialogsPage={props.dialogsPage} clickAddDialog={clickAddDialog} onchangeDialog={onchangeDialog}/>
+//     )
+// }
 
-    const onchangeDialog = (newDialog:string) => {
-        props.dispatch(onChangeDialogAC(newDialog))
-    }
+let stateToProps=(state:StateType)=>{    //в первом обьекте  сидят данные из стейта
+return {
+    dialogsPage:state.dialogsPage
+}};
 
-    const clickAddDialog=()=>{
-        props.dispatch(addDialogPostAC())
-    }
+let dispatchToProps=(dispatch:any)=>{   //колбэки для презентационной компоненты
+return {
+    clickAddDialog:()=>{
+        dispatch(addDialogPostAC());
+    },
+    onchangeDialog:(newDialog:string)=>{
+        dispatch(onChangeDialogAC(newDialog));
+    },
+}}
 
-
-    return (
-      <Dialogs dialogsPage={props.dialogsPage} clickAddDialog={clickAddDialog} onchangeDialog={onchangeDialog}/>
-    )
-}
+export const DialogsContainer=connect(stateToProps,dispatchToProps)(Dialogs) //как бы мы dialog законектили к stor-у при помощи react-redux

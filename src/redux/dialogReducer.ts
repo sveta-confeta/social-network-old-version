@@ -1,7 +1,7 @@
 import {v1} from "uuid";
-import {ActionType, DialogsItemType} from "./state";
+import {DialogsItemType} from "./state";
 
-let initialState= {
+let initialState = {
     dialogsItem: [
         {name: 'Dimych', id: 1},
         {name: 'Agafon', id: 2},
@@ -18,32 +18,36 @@ let initialState= {
 
 };
 
-export const dialogReducer = (state: DialogsItemType=initialState,action:ActionType) => {
-   if (action.type ==='NEW-DIALOG-POST') {
-        let newPost = {text:state.dialogTextarea, id: v1()};
-        state.messagesItem.push(newPost);
-        state.dialogTextarea = "";
+export const dialogReducer = (state: DialogsItemType = initialState, action: ActionType) : DialogsItemType=> {
+    switch (action.type) {
+        case 'NEW-DIALOG-POST': {
+            let newPost = {text: state.dialogTextarea, id: v1()};
+            let newState = {...state, messagesItem: [...state.messagesItem, newPost]}
+            newState.dialogTextarea = "";
+            return newState;
+        }
+        case "UPDATE-NEW-DIALOG-TEXT": {
+            return {...state,dialogTextarea:state.dialogTextarea=action.newText}
+        }
+        default:
+            return state
+    }}
 
-    }else if (action.type ==="UPDATE-NEW-DIALOG-TEXT") {
-        state.dialogTextarea = action.newText;
 
+export type OnChangeDialogACType = ReturnType<typeof onChangeDialogAC>
+
+ export type AddDialogPostACType = ReturnType<typeof addDialogPostAC>
+
+type ActionType=OnChangeDialogACType|AddDialogPostACType;
+
+    export const onChangeDialogAC = (newDialog: string) => {   //передаем содержимое текстареа
+        return {
+            type: "UPDATE-NEW-DIALOG-TEXT",
+            newText: newDialog
+        } as const
     }
-   return state
-};
-
-
-export type OnChangeDialogACType=ReturnType<typeof onChangeDialogAC>
-
-export type AddDialogPostACType=ReturnType<typeof addDialogPostAC>
-
-export const onChangeDialogAC=(newDialog:string)=>{   //передаем содержимое текстареа
-    return{
-        type:"UPDATE-NEW-DIALOG-TEXT",
-        newText:newDialog
-    }as const
-}
-export const addDialogPostAC=()=>{
-    return{
-        type:'NEW-DIALOG-POST'
-    } as const
-}
+    export const addDialogPostAC = () => {
+        return {
+            type: 'NEW-DIALOG-POST'
+        } as const
+    }
