@@ -8,7 +8,7 @@ let rootReducer=combineReducers({//сюда поместим все редьюс
     profilePage:profileReducer,
     dialogsPage:dialogReducer,
     navbarPage:friendsReducer,
-    contacts:ContactsReducer
+    contactsPage:ContactsReducer,
 });
 
 // определить автоматически тип всего объекта состояния

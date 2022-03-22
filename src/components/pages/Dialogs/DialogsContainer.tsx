@@ -5,14 +5,6 @@ import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 
-
-export type DialogsPropsType = {
-    dialogsPage: DialogsItemType
-    dispatch: (action: ActionType) => void
-
-}
-
-
 // export const DialogsContainer = (props: DialogsPropsType) => {
 //
 //     const onchangeDialog = (newDialog:string) => {

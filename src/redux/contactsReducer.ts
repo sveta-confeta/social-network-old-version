@@ -4,6 +4,7 @@ let initialState: ContactsState = {
     contact: [
         {
             id: v1(),
+            fotoIcon:'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
             followed: true,
             fullName: 'Dmitry',
             status: 'I am boss',
@@ -11,6 +12,7 @@ let initialState: ContactsState = {
         },
         {
             id: v1(),
+            fotoIcon:'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
             followed: true,
             fullName: 'Sveta',
             status: 'I am junior',
@@ -18,6 +20,7 @@ let initialState: ContactsState = {
         },
         {
             id: v1(),
+            fotoIcon:'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
             followed: true,
             fullName: 'Olga',
             status: 'I am fine',
@@ -25,6 +28,7 @@ let initialState: ContactsState = {
         },
         {
             id: v1(),
+            fotoIcon:'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
             followed: false,
             fullName: 'Natasha',
             status: 'Shit happens',
@@ -33,7 +37,9 @@ let initialState: ContactsState = {
     ]
 }
 export type ContactsType = {
+
     id: string
+    fotoIcon:string
     followed: boolean
     fullName: string
     status: string
