@@ -4,6 +4,7 @@ import {ActionType, PostType, StateType} from "../../../../redux/state";
 import {addPostAC, onChangeHandlerAC} from "../../../../redux/profileReducer";
 import {MyPosts} from "./MyPosts";
 import {connect} from "react-redux";
+import {AppRootStateType} from "../../../../redux/redux-store";
 
  type MyPostsPropsType={
      profilePosts:Array<PostType>
@@ -34,13 +35,13 @@ import {connect} from "react-redux";
 //     )
 // }
 
-let stateToProps=(state:StateType)=>{    //в первом обьекте  сидят данные из стейта
+let mapStateToProps=(state:AppRootStateType)=>{    //в первом обьекте  сидят данные из стейта
     return {
         profilePosts:state.profilePage.profilePosts,
         valueTextarea:state.profilePage.valueTextarea
     }};
 
-let dispatchToProps=(dispatch:any)=>{   //колбэки для презентационной компоненты
+let mapDispatchToProps=(dispatch:any)=>{   //колбэки для презентационной компоненты
     return {
         clickAddPost:()=>{
             dispatch(addPostAC());
@@ -51,4 +52,4 @@ let dispatchToProps=(dispatch:any)=>{   //колбэки для презента
 
     }}
 
-export const MyPostsContainer = connect (stateToProps,dispatchToProps)(MyPosts);
+export const MyPostsContainer = connect (mapStateToProps,mapDispatchToProps)(MyPosts);

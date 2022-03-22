@@ -9,6 +9,7 @@ import {Music} from "./components/pages/Music/Music";
 import {Helping} from "./components/pages/Helping/Helping";
 import {store} from "./redux/redux-store";
 import {DialogsContainer} from "./components/pages/Dialogs/DialogsContainer";
+import Contacts from "./components/Contacts/Contacts";
 
 
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path='/music' element={<Music/>}/>
                     <Route path='/helping' element={<Helping/>}/>
                     <Route path='/helping' element={<Helping/>}/>
+                    <Route path='/contacts' element={<Contacts/>}/>
                     {/*<Route path='*' element={<NotFoundPage/>}/> -если не найдены страницы можно оформить и отобразить эту компоненту*/}
                 </Routes>
             </div>

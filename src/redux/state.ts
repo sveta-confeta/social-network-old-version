@@ -45,6 +45,7 @@ export type StateType = {
     navbarPage: FriendsDataType
 }
 
+
 export type ActionType = AddPostActionType | UpdateNewPostTextActionType | OnChangeDialogACType | AddDialogPostACType
 
 export type StoreType = {
