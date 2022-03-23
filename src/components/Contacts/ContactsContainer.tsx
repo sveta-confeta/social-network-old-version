@@ -2,28 +2,39 @@ import React from 'react';
 import {connect} from "react-redux";
 import {Contacts} from "./Contacts";
 import {AppRootStateType} from "../../redux/redux-store";
-import {ContactsType, followAC, setUsersAC, unFollowAC} from "../../redux/contactsReducer";
+import {ContactsStateType, ContactsType, followAC, setUsersAC, unFollowAC} from "../../redux/contactsReducer";
+import {Dispatch} from "redux";
 
-const mapStateToProps=(state:AppRootStateType)=>{
-    return{
-        contacts:state.contactsPage.contact //нам нужен не весь стейт а его часть
+type MapStatePropsType = {
+    contacts: ContactsStateType
+}
+type MapDispatchPropsType = {
+    follow: (userID: string) => void
+    unfollow: (userID: string)=>void
+    setUsers: (users: Array<ContactsType>)=>void
+}
+export type СontactsPropsType= MapStatePropsType & MapDispatchPropsType //чтоб передать коротко в презентационную компоненту
+    //через пропсы
+const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
+    return {
+        contacts: state.contactsPage//нам нужен не весь стейт а его часть
         //и теперь в props Contacts будет сидеть сontacts
     }
 }
-
-const mapDispatchToProps=(dispatch:any)=>{
-    return{
-        follow:(userID:string)=>{
+//import dispatch из редакса
+const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType=>{
+    return {
+        follow: (userID: string) => {
             dispatch(followAC(userID))
         },
-        unfollow:(userID:string)=>{
+        unfollow: (userID: string) => {
             dispatch(unFollowAC(userID))
         },
-        setUsers:(users:Array<ContactsType>)=>{
+        setUsers: (users: Array<ContactsType>) => {
             dispatch(setUsersAC(users))
         },
 
     }
 }
 
-export const ContactsContainer = connect(mapStateToProps,mapDispatchToProps)(Contacts)
+export const ContactsContainer = connect(mapStateToProps, mapDispatchToProps)(Contacts)
