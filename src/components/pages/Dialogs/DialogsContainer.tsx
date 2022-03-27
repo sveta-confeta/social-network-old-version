@@ -1,5 +1,4 @@
 import React from "react";
-import {ActionType, DialogsItemType, StateType} from "../../../redux/state";
 import {addDialogPostAC, onChangeDialogAC} from "../../../redux/dialogReducer";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";

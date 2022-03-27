@@ -1,7 +1,7 @@
 import {v1} from "uuid";
 
 let initialState: ContactsStateType = {
-     contact: [
+     contact: [ //как будто изначально ничего нет, и мы отрисуем контактов в условии что сдесь изначально ничего нет
     //     {
     //         id: v1(),
     //         fotoIcon:'https://sun9-1.userapi.com/c855724/v855724535/15854/dHNLGjoiM_0.jpg',
@@ -39,9 +39,12 @@ let initialState: ContactsStateType = {
 export type ContactsType = {
 
     id: string
-    fotoIcon:string
+    photos: {
+        small: undefined|string,
+        large: undefined|string,
+    }
     followed: boolean
-    fullName: string
+    name: string
     status: string
     location: { city: string, coutntry: string }
 }
