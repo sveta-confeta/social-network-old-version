@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {Contacts} from "./Contacts";
 import {AppRootStateType} from "../../redux/redux-store";
 import {ContactsStateType, ContactsType, followAC, setUsersAC, unFollowAC} from "../../redux/contactsReducer";
 import {Dispatch} from "redux";
+import {ContactsClassComponent} from "./ContactsClassComponent";
 
 type MapStatePropsType = {
     contacts: ContactsStateType
@@ -13,7 +13,7 @@ type MapDispatchPropsType = {
     unfollow: (userID: string)=>void
     setUsers: (users: Array<ContactsType>)=>void
 }
-export type СontactsPropsType= MapStatePropsType & MapDispatchPropsType //чтоб передать коротко в презентационную компоненту
+export type ContactsPropsType= MapStatePropsType & MapDispatchPropsType //чтоб передать коротко в презентационную компоненту
     //через пропсы
 const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
@@ -37,4 +37,4 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType=>{
     }
 }
 
-export const ContactsContainer = connect(mapStateToProps, mapDispatchToProps)(Contacts)
+export const ContactsContainer = connect(mapStateToProps, mapDispatchToProps)(ContactsClassComponent)

@@ -1,18 +1,17 @@
 import React from 'react';
 import s from './Contacts.module.css'
-import {СontactsPropsType} from "./ContactsContainer";
+import {ContactsPropsType} from "./ContactsContainer";
 import  axios from "axios";
 import userPfoto from './../../img/User-PNG-Icon.png' // userPfoto потом используем как переменную
 
 
-export const Contacts = (props: СontactsPropsType) => {
+export const Contacts = (props: ContactsPropsType) => {
+
     if(props.contacts.contact.length===0){  //если контактов нет на странице, тогда...
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response=>{
             debugger //дебагером можем увидеть то что приходит в response .данные в data.
             props.setUsers(response.data.items); //этот путь к обьекту с данными мы увидели через дебагер
         });
-
-
     }
 
     const unfollowHandler=(userID:string)=>{
@@ -27,7 +26,7 @@ export const Contacts = (props: СontactsPropsType) => {
             {
                 props.contacts.contact.map(m => <div className={s.bodyContacts} key={m.id}>
                         <div className={s.icon}>
-                            <img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> <br/>
+                            <img className={s.ava} alt={'заглушка-аватарка'} src={m.photos.small !== null ? m.photos.small : userPfoto}/> <br/>
                             {m.followed ? <button onClick={()=>unfollowHandler(m.id)}>Unfolow</button>: <button onClick={()=>followHandler(m.id)}>Follow</button> }
 
                         </div>
