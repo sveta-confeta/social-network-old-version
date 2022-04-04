@@ -1,4 +1,4 @@
-import {v1} from "uuid";
+
 
 let initialState: ContactsStateType = {
      contact: [ //как будто изначально ничего нет, и мы отрисуем контактов в условии что сдесь изначально ничего нет
@@ -38,9 +38,9 @@ let initialState: ContactsStateType = {
     pageSize:5, //количество выводимых юзеров на страницу
     totalUsersCount:0, //начальное значение всех юзеров -должно приходить с сервера
     actualPage:2,//активная выбранная страница-со старта первая
+    isFetching:false,//крутилка .начальное значение выключено
 }
 export type ContactsType = {
-
     id: string
     photos: {
         small: undefined|string,
@@ -57,14 +57,16 @@ export type ContactsStateType = {
     pageSize:number,
     totalUsersCount:number,
     actualPage:number,
+    isFetching:boolean,
 }
 type followACType = ReturnType<typeof followAC>;
 type unFollowACType = ReturnType<typeof unFollowAC>;
 type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
-type totalUsersCountAC=ReturnType<typeof totalUsersCountAC>
+type totalUsersCountACType=ReturnType<typeof totalUsersCountAC>
+type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 
-type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountAC;
+type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountACType|changeFetchingACType;
 export const ContactsReducer = (state: ContactsStateType = initialState, action: ActionType): ContactsStateType => {
     switch (action.type) {
         case 'FOLLOW': {
@@ -81,6 +83,9 @@ export const ContactsReducer = (state: ContactsStateType = initialState, action:
         }
         case 'TOTAL-USERS-COUNT':{
             return {...state,totalUsersCount:action.totalUsersCount}
+        }
+        case 'CHANGE-FETCHING':{
+            return {...state,isFetching:action.value}
         }
         default:
             return  state;
@@ -121,3 +126,11 @@ export const setUsersAC = (users:Array<ContactsType>) => {
         users,
     } as const
 }
+
+export const changeFetchingAC = (value:boolean) => {
+    return {
+        type: 'CHANGE-FETCHING',
+       value,
+    } as const
+}
+
