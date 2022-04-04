@@ -2,3 +2,14 @@
     width: 70px;
     height: 70px;
 }
+.page{
+    font-weight: bold;
+}
+.pagesUsers{
+    display: flex;
+}
+
+.pagesUsers li{
+    padding: 10px;
+    cursor: pointer;
+}

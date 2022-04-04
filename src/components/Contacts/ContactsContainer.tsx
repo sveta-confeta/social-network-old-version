@@ -1,24 +1,40 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
-import {ContactsStateType, ContactsType, followAC, setUsersAC, unFollowAC} from "../../redux/contactsReducer";
+import {
+    actualPageAC,
+    ContactsType,
+    followAC,
+    setUsersAC,
+    totalUsersCountAC,
+    unFollowAC
+} from "../../redux/contactsReducer";
 import {Dispatch} from "redux";
 import {ContactsClassComponent} from "./ContactsClassComponent";
 
 type MapStatePropsType = {
-    contacts: ContactsStateType
+    contacts: Array<ContactsType>
+    pageSize:number,
+    totalUsersCount:number,
+    actualPage:number
 }
 type MapDispatchPropsType = {
     follow: (userID: string) => void
     unfollow: (userID: string)=>void
     setUsers: (users: Array<ContactsType>)=>void
+    changeActualPage:(actualPage:number)=>void
+    setTotalUsersCount:(totalCount:number)=>void
 }
 export type ContactsPropsType= MapStatePropsType & MapDispatchPropsType //чтоб передать коротко в презентационную компоненту
     //через пропсы
 const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
-        contacts: state.contactsPage//нам нужен не весь стейт а его часть
+        contacts: state.contactsPage.contact,//нам нужен не весь стейт а его часть
         //и теперь в props Contacts будет сидеть сontacts
+        pageSize:state.contactsPage.pageSize,
+        totalUsersCount:state.contactsPage.totalUsersCount,
+        actualPage:state.contactsPage.actualPage,
+
     }
 }
 //import dispatch из редакса
@@ -32,6 +48,12 @@ const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType=>{
         },
         setUsers: (users: Array<ContactsType>) => {
             dispatch(setUsersAC(users))
+        },
+        changeActualPage:(actualPage:number)=>{
+            dispatch(actualPageAC(actualPage))
+        },
+        setTotalUsersCount:(totalCount:number)=>{
+            dispatch(totalUsersCountAC(totalCount))
         },
 
     }
