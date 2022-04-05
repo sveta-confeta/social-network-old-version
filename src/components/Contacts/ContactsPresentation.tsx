@@ -2,28 +2,29 @@ import React from 'react';
 import s from "./Contacts.module.css";
 import userPfoto from "../../img/User-PNG-Icon.png";
 import {ContactsType} from "../../redux/contactsReducer";
+import Routes, {NavLink} from 'react-router-dom';
 
-type ContactsPresentationType={
-    changeActualPage:(page: number)=>void
-    unfollowHandler:(userID: string)=>void
-    followHandler:(userID: string)=>void
-    totalUsersCount:number
-    pageSize:number
-    actualPage:number
-    contacts:Array<ContactsType>
+type ContactsPresentationType = {
+    changeActualPage: (page: number) => void
+    unfollowHandler: (userID: string) => void
+    followHandler: (userID: string) => void
+    totalUsersCount: number
+    pageSize: number
+    actualPage: number
+    contacts: Array<ContactsType>
 
 }
 
- export const ContactsPresentation = (props:ContactsPresentationType) => {
+export const ContactsPresentation = (props: ContactsPresentationType) => {
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);//так мы узнаем количество страниц на нашем сайте
-     let pages = [];
-     for (let i = 1; i <= pagesCount; i++) {
-         if(i<=20){ //условие чтобы сгенерировалось только 20 страниц
-             pages.push(i);
-         }
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++) {
+        if (i <= 20) { //условие чтобы сгенерировалось только 20 страниц
+            pages.push(i);
+        }
 
-     }
+    }
     return (
         // возращает то же самое что и функциональная компонента, только пропсы превращаются в this.props
         <div>
@@ -33,9 +34,12 @@ type ContactsPresentationType={
 
             </ul>
             {
-                props.contacts.map(m => <div className={s.bodyContacts} key={m.id}>
+                props.contacts.map((m,i) => <div className={s.bodyContacts} key={m.id}>
                         <div className={s.icon}>
-                            <img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> <br/>
+                            {/*мы хотим нажимать на иконку(img) и переходить на отдельный профиль юзера*/}
+
+                            <NavLink to={'/profile/'+ m.id}><img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> </NavLink> <br/>
+
                             {m.followed ? <button onClick={() => props.unfollowHandler(m.id)}>Unfolow</button> :
                                 <button onClick={() => props.followHandler(m.id)}>Follow</button>}
 

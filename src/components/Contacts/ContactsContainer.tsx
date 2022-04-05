@@ -9,10 +9,11 @@ import {
     totalUsersCountAC,
     unFollowAC
 } from "../../redux/contactsReducer";
-import {Dispatch} from "redux";
+
 import axios from "axios";
 import {ContactsPresentation} from "./ContactsPresentation";
 import {Preloader} from "../Util/Preloader";
+
 
 type MapStatePropsType = {
     contacts: Array<ContactsType>
