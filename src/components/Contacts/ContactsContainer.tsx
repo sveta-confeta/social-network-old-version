@@ -105,28 +105,36 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     }
 }
 //import dispatch из редакса
-const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
-    return {
-        follow: (userID: string) => {
-            dispatch(followAC(userID))
-        },
-        unfollow: (userID: string) => {
-            dispatch(unFollowAC(userID))
-        },
-        setUsers: (users: Array<ContactsType>) => {
-            dispatch(setUsersAC(users))
-        },
-        changeActualPage: (actualPage: number) => {
-            dispatch(actualPageAC(actualPage))
-        },
-        setTotalUsersCount: (totalCount: number) => {
-            dispatch(totalUsersCountAC(totalCount))
-        },
-        changeFetching: (value: boolean) => {
-            dispatch(changeFetchingAC(value))
-        },
+// const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
+//     return {
+//         follow: (userID: string) => {
+//             dispatch(followAC(userID))
+//         },
+//         unfollow: (userID: string) => {
+//             dispatch(unFollowAC(userID))
+//         },
+//         setUsers: (users: Array<ContactsType>) => {
+//             dispatch(setUsersAC(users))
+//         },
+//         changeActualPage: (actualPage: number) => {
+//             dispatch(actualPageAC(actualPage))
+//         },
+//         setTotalUsersCount: (totalCount: number) => {
+//             dispatch(totalUsersCountAC(totalCount))
+//         },
+//         changeFetching: (value: boolean) => {
+//             dispatch(changeFetchingAC(value))
+//         },
+//
+//     }
+// }
 
-    }
-}
-
-export const ContactsContainer = connect(mapStateToProps, mapDispatchToProps)(ContactsClassComponent)
+//рефактор mapDispatchToProps:
+export const ContactsContainer = connect(mapStateToProps, {
+    follow:followAC,
+    unfollow: unFollowAC,
+    setUsers: setUsersAC,
+    changeActualPage: actualPageAC,
+    setTotalUsersCount: totalUsersCountAC,
+    changeFetching: changeFetchingAC,
+    })(ContactsClassComponent)
