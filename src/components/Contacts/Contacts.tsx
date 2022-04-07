@@ -9,7 +9,7 @@ export const Contacts = (props: ContactsPropsType) => {
 
     if(props.contacts.length===0){  //если контактов нет на странице, тогда...
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response=>{
-            debugger //дебагером можем увидеть то что приходит в response .данные в data.
+           // debugger дебагером можем увидеть то что приходит в response .данные в data.
             props.setUsers(response.data.items); //этот путь к обьекту с данными мы увидели через дебагер
         });
     }
