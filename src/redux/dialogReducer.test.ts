@@ -1,4 +1,4 @@
-import {DialogsItemType, ProfileType} from "./state";
+import {DialogsItemType} from "./state";
 import {v1} from "uuid";
 import {addDialogPostAC, dialogReducer, onChangeDialogAC} from "./dialogReducer";
 

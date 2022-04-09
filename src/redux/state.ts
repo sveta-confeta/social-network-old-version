@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {AddPostActionType, profileReducer, UpdateNewPostTextActionType} from "./profileReducer";
+import {AddPostActionType, profileReducer, ProfileType, UpdateNewPostTextActionType} from "./profileReducer";
 import {AddDialogPostACType, dialogReducer, OnChangeDialogACType,} from "./dialogReducer";
 import {friendsReducer} from "./friendsReducer";
 
@@ -34,11 +34,7 @@ export type DialogsItemType = {
     dialogTextarea: string
 }
 
-export type ProfileType = {
-    profilePosts: Array<PostType>
-    valueTextarea: string
 
-}
 export type StateType = {
     profilePage: ProfileType
     dialogsPage: DialogsItemType
@@ -66,6 +62,7 @@ export let store: StoreType = {
                 {id: v1(), message: 'By-by', count: 6},
             ],
             valueTextarea: '',
+            profile: null,
         },
         dialogsPage: {
             dialogsItem: [

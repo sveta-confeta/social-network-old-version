@@ -1,6 +1,5 @@
 import {v1} from "uuid";
-import {ProfileType} from "./state";
-import {addPostAC, onChangeHandlerAC, profileReducer} from "./profileReducer";
+import {addPostAC, onChangeHandlerAC, profileReducer, ProfileType} from "./profileReducer";
 
 test('add post',()=>{
     const startState:ProfileType= {
@@ -10,6 +9,7 @@ test('add post',()=>{
             {id: v1(), message: 'By-by', count: 6},
         ],
             valueTextarea: '',
+        profile: null,
     }
 
    const endState=profileReducer(startState,addPostAC());
@@ -24,6 +24,7 @@ test('"UPDATE-NEW-POST-TEXT"',()=>{
             {id: v1(), message: 'By-by', count: 6},
         ],
         valueTextarea: '',
+        profile: null,
     }
     let newText:string='Hallo,How are you';
 

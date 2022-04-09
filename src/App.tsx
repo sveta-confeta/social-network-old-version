@@ -9,7 +9,7 @@ import {Helping} from "./components/pages/Helping/Helping";
 import {store} from "./redux/redux-store";
 import {DialogsContainer} from "./components/pages/Dialogs/DialogsContainer";
 import {ContactsContainer} from "./components/Contacts/ContactsContainer";
-import {ProfileContainer} from "./components/pages/Profile/ProfileContainer";
+import ProfileContainer from "./components/pages/Profile/ProfileContainer";
 
 
 
@@ -21,7 +21,7 @@ function App() {
             <Navbar navbarPage={state.navbarPage}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    <Route path='/profile/:id' element={<ProfileContainer/>}/>
+                    <Route path='/profile/:userID' element={<ProfileContainer/>}/>
                     <Route path='/dialogs/*' element={<DialogsContainer
                         />}/>
                     <Route path='/news' element={<News/>}/>
