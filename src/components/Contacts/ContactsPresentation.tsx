@@ -20,10 +20,9 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);//так мы узнаем количество страниц на нашем сайте
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
-        if (i <= 20) { //условие чтобы сгенерировалось только 20 страниц
+        if (i <= 3670 && i > 3650) { //условие чтобы сгенерировалось только 20 страниц
             pages.push(i);
         }
-
     }
     return (
         // возращает то же самое что и функциональная компонента, только пропсы превращаются в this.props
