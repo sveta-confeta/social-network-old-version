@@ -3,12 +3,14 @@ import {profileReducer} from "./profileReducer";
 import {dialogReducer} from "./dialogReducer";
 import {friendsReducer} from "./friendsReducer";
 import {ContactsReducer} from "./contactsReducer";
+import {authReducer} from "./authReducer";
 
 let rootReducer=combineReducers({//сюда поместим все редьюсеры
     profilePage:profileReducer,
     dialogsPage:dialogReducer,
     navbarPage:friendsReducer,
     contactsPage:ContactsReducer,
+    auth: authReducer,
 });
 
 // определить автоматически тип всего объекта состояния
