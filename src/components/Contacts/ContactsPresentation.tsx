@@ -2,7 +2,8 @@ import React from 'react';
 import s from "./Contacts.module.css";
 import userPfoto from "../../img/User-PNG-Icon.png";
 import {ContactsType} from "../../redux/contactsReducer";
-import Routes, {NavLink} from 'react-router-dom';
+import  {NavLink} from 'react-router-dom';
+import axios from "axios";
 
 type ContactsPresentationType = {
     changeActualPage: (page: number) => void
@@ -24,6 +25,31 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
             pages.push(i);
         }
     }
+
+    const followHandler=(userID:string)=>{
+        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{},{withCredentials:true,
+        headers:{'API-KEY':'f3162e35-770f-487f-b065-e5df2b65ff7d'}}) //withCredentials в пост 3им параметром и ключ с сайта
+            .then(response=>{
+                debugger
+                if (response.data.resultCode===0) { //сервер подтвердил что подписка произошла
+                    debugger
+                    props.followHandler(userID)
+                }
+            })
+
+    }
+    const  unfollowHandler=(userID:string)=>{
+        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/`+userID,{withCredentials:true,
+            headers:{'API-KEY':'f3162e35-770f-487f-b065-e5df2b65ff7d'}})//withCredentials в делит и гет  2ым параметром
+            .then(response=>{
+                if (response.data.resultCode===0) { //сервер подтвердил что подписка произошла
+
+                    props.unfollowHandler(userID)
+                }
+            })
+
+    }
+
     return (
         // возращает то же самое что и функциональная компонента, только пропсы превращаются в this.props
         <div>
@@ -39,8 +65,8 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
 
                             <NavLink to={'/profile/'+ m.id}><img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> </NavLink> <br/>
 
-                            {m.followed ? <button onClick={() => props.unfollowHandler(m.id)}>Unfolow</button> :
-                                <button onClick={() => props.followHandler(m.id)}>Follow</button>}
+                            {m.followed ? <button onClick={() => unfollowHandler(m.id)}>Unfolow</button> :
+                                <button onClick={() => followHandler(m.id)}>Follow</button>}
 
                         </div>
 

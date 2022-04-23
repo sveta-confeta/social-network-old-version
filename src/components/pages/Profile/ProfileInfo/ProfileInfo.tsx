@@ -12,8 +12,7 @@ type ProfileInfoPropsType = {
 const ProfileInfo = (props: ProfileInfoPropsType) => {
     if (!props.profile) {
         return <Preloader/>  //если нет профайла то крутилка
-    }//потом разметка
-    // if (props.profile)
+    }
     return (
         <div>
             <img className={s.main_img} src={"https://pbs.twimg.com/profile_banners/2862249501/1415359067/1500x500" }
