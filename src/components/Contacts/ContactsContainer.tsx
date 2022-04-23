@@ -30,14 +30,14 @@ type MapDispatchPropsType = {
     setTotalUsersCount: (totalCount: number) => void
     changeFetching:(value:boolean)=>void
 }
-export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //чтоб передать коротко в презентационную компоненту
-//через пропсы
+export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
 
-type ContactsClassComponentPropsType = ContactsPropsType //типизация для классовой компонеты
+
+
 
 //классовая компонета с подключением к серверу
-export class ContactsClassComponent extends React.Component<ContactsClassComponentPropsType> {
+export class ContactsClassComponent extends React.Component<ContactsPropsType> {
     componentDidMount() { //вмонтирование происходит 1 раз а дальше апдейты
         this.props.changeFetching(true);//true-когда пошел запорос
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.pageSize}`).then(response => {

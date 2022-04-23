@@ -6,6 +6,7 @@ export type AuthType = {
     login: string | null,
     email: string | null,
     isFetching: boolean,
+    isAuth:boolean
 }
 
 // let auth:authType= {
@@ -15,8 +16,9 @@ export type AuthType = {
 
 let initialState = {
     id: null,
-    login: null,
     email: null,
+    login: null,
+    isAuth:false,  //если id,email,login пришли
     isFetching: false,
 
 }
@@ -26,7 +28,7 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
     //теперь у нас под именем state-  _state.profilePage
     switch (action.type) {
         case  "SET-USER-DATA": {
-           return  {...state,...action.data}
+           return  {...state,...action.data,isAuth:true}
         }
         case 'CHANGE-FETCHING':{
             return {...state,isFetching:action.value}
@@ -43,11 +45,11 @@ type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 
 
-export const setUserDataAC = (userID: number, email: string, login: string) => {
+export const setUserDataAC = (id: number, email: string, login: string) => {
     return {
         type: "SET-USER-DATA",
         data: {
-            userID,
+            id,
             email,
             login,
         },

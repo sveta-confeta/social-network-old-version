@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import {Header} from "./components/Header/Header";
 import {Navbar} from "./components/Navbar/Navbar";
 import {Route, Routes} from "react-router-dom";
 import {News} from "./components/pages/News/News";
@@ -10,6 +9,8 @@ import {store} from "./redux/redux-store";
 import {DialogsContainer} from "./components/pages/Dialogs/DialogsContainer";
 import {ContactsContainer} from "./components/Contacts/ContactsContainer";
 import ProfileContainer from "./components/pages/Profile/ProfileContainer";
+import HeaderContainer from "./components/Header/HeaderContainer";
+
 
 
 
@@ -17,7 +18,7 @@ function App() {
     const state=store.getState();
     return (
         <div className="app-wrapper">
-            <Header/>
+            <HeaderContainer/>
             <Navbar navbarPage={state.navbarPage}/>
             <div className="app-wrapper-content">
                 <Routes>

@@ -22,5 +22,5 @@ export let store=createStore(rootReducer);
 // @ts-ignore
 window.store = store;
 
-
+//store.getState()  пишем в консоли
 
