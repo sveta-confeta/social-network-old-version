@@ -4,7 +4,7 @@ import {AppRootStateType} from "../../redux/redux-store";
 import {
     actualPageAC, changeFetchingAC,
     ContactsType,
-    followAC,
+    followAC, followButtonActiveAC,
     setUsersAC,
     totalUsersCountAC,
     unFollowAC
@@ -21,6 +21,8 @@ type MapStatePropsType = {
     totalUsersCount: number,
     actualPage: number,
     isFetching: boolean,
+    followButtonActive:boolean
+
 }
 type MapDispatchPropsType = {
     follow: (userID: string) => void
@@ -29,6 +31,7 @@ type MapDispatchPropsType = {
     changeActualPage: (actualPage: number) => void
     setTotalUsersCount: (totalCount: number) => void
     changeFetching:(value:boolean)=>void
+    changeFollowButtonActive:(value:boolean)=> void
 }
 export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
@@ -85,6 +88,8 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
                                   pageSize={this.props.pageSize}
                                   actualPage={this.props.actualPage}
                                   contacts={this.props.contacts}
+                                  followButtonActive={this.props.followButtonActive}
+                                  changeFollowButtonActive={this.props.changeFollowButtonActive}
 
             />
 
@@ -101,6 +106,7 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
         totalUsersCount: state.contactsPage.totalUsersCount,
         actualPage: state.contactsPage.actualPage,
         isFetching: state.contactsPage.isFetching,
+        followButtonActive:state.contactsPage.followButtonActive,
 
     }
 }
@@ -137,4 +143,5 @@ export const ContactsContainer = connect(mapStateToProps, {
     changeActualPage: actualPageAC,
     setTotalUsersCount: totalUsersCountAC,
     changeFetching: changeFetchingAC,
+    changeFollowButtonActive:followButtonActiveAC
     })(ContactsClassComponent)

@@ -39,6 +39,7 @@ let initialState: ContactsStateType = {
     totalUsersCount:0, //начальное значение всех юзеров -должно приходить с сервера
     actualPage:2,//активная выбранная страница-со старта первая
     isFetching:false,//крутилка .начальное значение выключено
+    followButtonActive:false,//кнопка в состоянии disabled что исключает повторный запрос на сервер пока не придет ответ
 }
 export type ContactsType = {
     id: string
@@ -58,6 +59,7 @@ export type ContactsStateType = {
     totalUsersCount:number,
     actualPage:number,
     isFetching:boolean,
+    followButtonActive:boolean,
 }
 type followACType = ReturnType<typeof followAC>;
 type unFollowACType = ReturnType<typeof unFollowAC>;
@@ -65,8 +67,9 @@ type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
 type totalUsersCountACType=ReturnType<typeof totalUsersCountAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
+type followButtonActiveACType=ReturnType<typeof followButtonActiveAC>
 
-type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountACType|changeFetchingACType;
+type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountACType|changeFetchingACType | followButtonActiveACType;
 export const ContactsReducer = (state: ContactsStateType = initialState, action: ActionType): ContactsStateType => {
     switch (action.type) {
         case 'FOLLOW': {
@@ -86,6 +89,9 @@ export const ContactsReducer = (state: ContactsStateType = initialState, action:
         }
         case 'CHANGE-FETCHING':{
             return {...state,isFetching:action.value}
+        }
+        case 'FOLLOW-BUTTON-ACTIVE':{
+            return {...state,followButtonActive:action.value}
         }
         default:
             return  state;
@@ -131,6 +137,13 @@ export const changeFetchingAC = (value:boolean) => {
     return {
         type: 'CHANGE-FETCHING',
        value,
+    } as const
+}
+
+export const followButtonActiveAC = (value:boolean) => {
+    return {
+        type: 'FOLLOW-BUTTON-ACTIVE',
+        value,
     } as const
 }
 

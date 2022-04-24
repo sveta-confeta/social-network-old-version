@@ -3,7 +3,6 @@ import s from "./Contacts.module.css";
 import userPfoto from "../../img/User-PNG-Icon.png";
 import {ContactsType} from "../../redux/contactsReducer";
 import  {NavLink} from 'react-router-dom';
-import axios from "axios";
 import {followApi, unfollowApi} from "../../api/api";
 
 type ContactsPresentationType = {
@@ -14,6 +13,8 @@ type ContactsPresentationType = {
     pageSize: number
     actualPage: number
     contacts: Array<ContactsType>
+    followButtonActive:boolean
+    changeFollowButtonActive:(value:boolean)=> void
 
 }
 
@@ -28,22 +29,25 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
     }
 
     const followHandler=(userID:string)=>{
+        props.changeFollowButtonActive(true) //кнопка активна перед запросом
         followApi(userID)
             .then(data=>{
                 if (data.resultCode===0) { //сервер подтвердил что подписка произошла
                     props.followHandler(userID)
                 }
             })
+        props.changeFollowButtonActive(false) //кнопка disabled после запроса
 
     }
     const  unfollowHandler=(userID:string)=>{
+        props.changeFollowButtonActive(true) //кнопка активна перед запросом
         unfollowApi(userID)
             .then(data=>{
                 if (data.resultCode===0) { //сервер подтвердил что подписка произошла
                     props.unfollowHandler(userID)
                 }
             })
-
+        props.changeFollowButtonActive(false) //кнопка disabled после запроса
     }
 
     return (
@@ -61,8 +65,8 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
 
                             <NavLink to={'/profile/'+ m.id}><img className={s.ava} src={m.photos.small !== null ? m.photos.small : userPfoto}/> </NavLink> <br/>
 
-                            {m.followed ? <button onClick={() => unfollowHandler(m.id)}>Unfolow</button> :
-                                <button onClick={() => followHandler(m.id)}>Follow</button>}
+                            {m.followed ? <button disabled={props.followButtonActive} onClick={() => unfollowHandler(m.id)}>Unfolow</button> ://усли будет в followButtonActive тру-кнопка будет задизейблена
+                                <button disabled={props.followButtonActive} onClick={() => followHandler(m.id)}>Follow</button>}
 
                         </div>
 
