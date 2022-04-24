@@ -10,9 +10,9 @@ import {
     unFollowAC
 } from "../../redux/contactsReducer";
 
-import axios from "axios";
 import {ContactsPresentation} from "./ContactsPresentation";
 import {Preloader} from "../Util/Preloader";
+import {getApiUsers} from "../../api/api";
 
 
 type MapStatePropsType = {
@@ -35,20 +35,23 @@ export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //ти�
 //классовая компонета с подключением к серверу
 export class ContactsClassComponent extends React.Component<ContactsPropsType> {
     componentDidMount() { //вмонтирование происходит 1 раз а дальше апдейты
-        this.props.changeFetching(true);//true-когда пошел запорос
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.pageSize}`,{withCredentials:true}).then(response => {
-            this.props.changeFetching(false);//false--когда пошел ответ
-            this.props.setUsers(response.data.items);
-            this.props.setTotalUsersCount(response.data.totalCount);
-        });
+        this.props.changeFetching(true);//true-когда пошел запорос но запроса нет есть крутилка
+        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.pageSize}`,{withCredentials:true}) //в api находится
+        getApiUsers(this.props.actualPage,this.props.pageSize)
+            .then(data => { //в апи из респонс уже извлекли дату
+           this.props.changeFetching(false);//false--когда пошел ответ
+            this.props.setUsers(data.items); //теперь просто из даты извлекаем наши нужные данные
+            this.props.setTotalUsersCount(data.totalCount);
+         });
     }
 
     changeActualPage = (page: number) => {
         this.props.changeFetching(true);//true-когда пошел запорос
         this.props.changeActualPage(page);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`,{withCredentials:true}).then(response => {
+        getApiUsers(page,this.props.pageSize)
+            .then(data => {
             this.props.changeFetching(false);//false--когда пошел ответ
-            this.props.setUsers(response.data.items);
+            this.props.setUsers(data.items);
         });
 
     }

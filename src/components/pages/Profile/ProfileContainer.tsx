@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {ProfileUserType, setProfileUsers} from "../../../redux/profileReducer";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {profileApi} from "../../../api/api";
 
 type MapStatePropsType = {
     profile: ProfileUserType | null;
@@ -19,10 +20,10 @@ export type ProfilePropsType = MapStatePropsType & mapDispatchToPropsType;
 class ProfileContainer extends React.Component<ProfilePropsType> {
     componentDidMount() {
         //@ts-ignore
-        let userID = this.props.router.params.userID;
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID).then(response => {
-            // debugger
-            this.props.setProfileUsers(response.data); //передаем через матчдиспатчпропс сразу в коннект
+        let userID:string = this.props.router.params.userID;
+        profileApi(userID)
+            .then(data=> {
+            this.props.setProfileUsers(data); //передаем через матчдиспатчпропс сразу в коннект
         })
     }
 

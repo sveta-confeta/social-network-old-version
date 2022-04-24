@@ -4,6 +4,7 @@ import userPfoto from "../../img/User-PNG-Icon.png";
 import {ContactsType} from "../../redux/contactsReducer";
 import  {NavLink} from 'react-router-dom';
 import axios from "axios";
+import {followApi, unfollowApi} from "../../api/api";
 
 type ContactsPresentationType = {
     changeActualPage: (page: number) => void
@@ -27,23 +28,18 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
     }
 
     const followHandler=(userID:string)=>{
-        axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${userID}`,{},{withCredentials:true,
-        headers:{'API-KEY':'f3162e35-770f-487f-b065-e5df2b65ff7d'}}) //withCredentials в пост 3им параметром и ключ с сайта
-            .then(response=>{
-                debugger
-                if (response.data.resultCode===0) { //сервер подтвердил что подписка произошла
-                    debugger
+        followApi(userID)
+            .then(data=>{
+                if (data.resultCode===0) { //сервер подтвердил что подписка произошла
                     props.followHandler(userID)
                 }
             })
 
     }
     const  unfollowHandler=(userID:string)=>{
-        axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/`+userID,{withCredentials:true,
-            headers:{'API-KEY':'f3162e35-770f-487f-b065-e5df2b65ff7d'}})//withCredentials в делит и гет  2ым параметром
-            .then(response=>{
-                if (response.data.resultCode===0) { //сервер подтвердил что подписка произошла
-
+        unfollowApi(userID)
+            .then(data=>{
+                if (data.resultCode===0) { //сервер подтвердил что подписка произошла
                     props.unfollowHandler(userID)
                 }
             })
