@@ -39,7 +39,7 @@ let initialState: ContactsStateType = {
     totalUsersCount:0, //начальное значение всех юзеров -должно приходить с сервера
     actualPage:2,//активная выбранная страница-со старта первая
     isFetching:false,//крутилка .начальное значение выключено
-    followButtonActive:false,//кнопка в состоянии disabled что исключает повторный запрос на сервер пока не придет ответ
+    followButtonActive:[] ,//кнопка в состоянии disabled что исключает повторный запрос на сервер пока не придет ответ
 }
 export type ContactsType = {
     id: string
@@ -59,7 +59,7 @@ export type ContactsStateType = {
     totalUsersCount:number,
     actualPage:number,
     isFetching:boolean,
-    followButtonActive:boolean,
+    followButtonActive:string[]
 }
 type followACType = ReturnType<typeof followAC>;
 type unFollowACType = ReturnType<typeof unFollowAC>;
@@ -67,16 +67,17 @@ type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
 type totalUsersCountACType=ReturnType<typeof totalUsersCountAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
-type followButtonActiveACType=ReturnType<typeof followButtonActiveAC>
+type buttonTrueDisabledACType=ReturnType<typeof buttonTrueDisabledAC>
+type buttonFalseDisabledACType=ReturnType<typeof buttonFalseDisabledAC>
 
-type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountACType|changeFetchingACType | followButtonActiveACType;
+type ActionType = followACType | unFollowACType  | setUsersACType | actualPageACType| totalUsersCountACType|changeFetchingACType | buttonTrueDisabledACType | buttonFalseDisabledACType;
 export const ContactsReducer = (state: ContactsStateType = initialState, action: ActionType): ContactsStateType => {
     switch (action.type) {
         case 'FOLLOW': {
             return {...state,contact:state.contact.map(m=> m.id===action.userID ? {...m,followed:true} : m)}
         }
         case 'UN-FOLLOW':{
-            return {...state,contact:state.contact.map(m=> m.id===action.userID  ?{...m,followed:false} : m)}
+            return {...state,contact:state.contact.map(m=> m.id===action.userID ?{...m,followed:false} : m)}
         }
         case 'SET-USERS':{
             return {...state,contact: action.users}
@@ -90,8 +91,13 @@ export const ContactsReducer = (state: ContactsStateType = initialState, action:
         case 'CHANGE-FETCHING':{
             return {...state,isFetching:action.value}
         }
-        case 'FOLLOW-BUTTON-ACTIVE':{
-            return {...state,followButtonActive:action.value}
+        case 'FOLLOW-BUTTON-TRUE':{
+            return {...state,followButtonActive: [...state.followButtonActive,action.userID]}
+
+        }
+        case 'FOLLOW-BUTTON-FALSE':{
+            return {...state,followButtonActive: state.followButtonActive.filter(id=> id!==action.userID)}
+
         }
         default:
             return  state;
@@ -140,10 +146,18 @@ export const changeFetchingAC = (value:boolean) => {
     } as const
 }
 
-export const followButtonActiveAC = (value:boolean) => {
+export const buttonTrueDisabledAC = (userID:string) => {
     return {
-        type: 'FOLLOW-BUTTON-ACTIVE',
-        value,
+        type: 'FOLLOW-BUTTON-TRUE',
+        userID
     } as const
 }
+export const buttonFalseDisabledAC = (userID:string) => {
+    return {
+        type: 'FOLLOW-BUTTON-FALSE',
+        userID
+    } as const
+}
+
+
 

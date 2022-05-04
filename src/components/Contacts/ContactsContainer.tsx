@@ -2,9 +2,9 @@ import React from 'react';
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
 import {
-    actualPageAC, changeFetchingAC,
+    actualPageAC, buttonFalseDisabledAC, buttonTrueDisabledAC, changeFetchingAC,
     ContactsType,
-    followAC, followButtonActiveAC,
+    followAC,
     setUsersAC,
     totalUsersCountAC,
     unFollowAC
@@ -21,7 +21,7 @@ type MapStatePropsType = {
     totalUsersCount: number,
     actualPage: number,
     isFetching: boolean,
-    followButtonActive:boolean
+    followButtonActive:string[];
 
 }
 type MapDispatchPropsType = {
@@ -31,7 +31,9 @@ type MapDispatchPropsType = {
     changeActualPage: (actualPage: number) => void
     setTotalUsersCount: (totalCount: number) => void
     changeFetching:(value:boolean)=>void
-    changeFollowButtonActive:(value:boolean)=> void
+    changeFollowButtonActive:(value:boolean,userId:string)=> void
+    buttonTrueDisabled:(userID:string)=>void,
+    buttonFalseDisabled:(userID:string)=>void,
 }
 export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
@@ -89,7 +91,8 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
                                   actualPage={this.props.actualPage}
                                   contacts={this.props.contacts}
                                   followButtonActive={this.props.followButtonActive}
-                                  changeFollowButtonActive={this.props.changeFollowButtonActive}
+                                  buttonTrueDisabled={this.props.buttonTrueDisabled}
+                                  buttonFalseDisabled={this.props.buttonFalseDisabled}
 
             />
 
@@ -143,5 +146,6 @@ export const ContactsContainer = connect(mapStateToProps, {
     changeActualPage: actualPageAC,
     setTotalUsersCount: totalUsersCountAC,
     changeFetching: changeFetchingAC,
-    changeFollowButtonActive:followButtonActiveAC
+    buttonTrueDisabled:buttonTrueDisabledAC,
+    buttonFalseDisabled:buttonFalseDisabledAC,
     })(ContactsClassComponent)
