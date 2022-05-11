@@ -1,4 +1,4 @@
-import {getApiUsers} from "../api/api";
+import {getApiUsers, onPageChange} from "../api/api";
 import {Dispatch} from "redux";
 
 
@@ -172,6 +172,17 @@ export const buttonFalseDisabledAC = (userID:string) => {
             dispatch(totalUsersCountAC(data.totalCount));
         });
 }}
+
+export const changeActualPageThunkCreator=(page:number,pageSize:number) => {
+    return (dispatch:Dispatch) => { //запрос получение юзеров-thunk
+        dispatch(changeFetchingAC(true));//true-когда пошел запорос но запроса нет есть крутилка
+        dispatch(actualPageAC(page));
+        onPageChange(page,pageSize) //page-текущая страница пользователей
+            .then(data => { //в апи из респонс уже извлекли дату
+                dispatch(changeFetchingAC(false));//false--когда пошел ответ
+                dispatch(setUsersAC(data.items)); //теперь просто из даты извлекаем наши нужные данные
+            });
+    }}
 
 
 

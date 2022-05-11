@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../redux/redux-store";
 import {
-    actualPageAC, buttonFalseDisabledAC, buttonTrueDisabledAC, changeFetchingAC,
+    actualPageAC, buttonFalseDisabledAC, buttonTrueDisabledAC, changeActualPageThunkCreator, changeFetchingAC,
     ContactsType,
     followAC, getUsersThunkCreator,
     setUsersAC,
@@ -12,7 +12,7 @@ import {
 
 import {ContactsPresentation} from "./ContactsPresentation";
 import {Preloader} from "../Util/Preloader";
-import {getApiUsers} from "../../api/api";
+
 
 
 type MapStatePropsType = {
@@ -21,7 +21,7 @@ type MapStatePropsType = {
     totalUsersCount: number,
     actualPage: number,
     isFetching: boolean,
-    followButtonActive:string[];
+    followButtonActive: string[];
 
 }
 type MapDispatchPropsType = {
@@ -30,31 +30,25 @@ type MapDispatchPropsType = {
     setUsers: (users: Array<ContactsType>) => void
     changeActualPage: (actualPage: number) => void
     setTotalUsersCount: (totalCount: number) => void
-    changeFetching:(value:boolean)=>void
-    changeFollowButtonActive:(value:boolean,userId:string)=> void
-    buttonTrueDisabled:(userID:string)=>void,
-    buttonFalseDisabled:(userID:string)=>void,
-    getUsersThunkCreator:(actualPage:number,pageSize:number)=>void
+    changeFetching: (value: boolean) => void
+    buttonTrueDisabled: (userID: string) => void,
+    buttonFalseDisabled: (userID: string) => void,
+    getUsersThunkCreator: (actualPage: number, pageSize: number) => void
+    changeActualPageThunkCreator:(page:number, pageSize:number)=>void
 }
 export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
 //классовая компонета с подключением к серверу
 export class ContactsClassComponent extends React.Component<ContactsPropsType> {
     componentDidMount() { //вмонтирование происходит 1 раз а дальше апдейты
-        this.props.getUsersThunkCreator(this.props.actualPage,this.props.pageSize);
+        this.props.getUsersThunkCreator(this.props.actualPage, this.props.pageSize); //get запрос за пользователями
 
     }
 
     changeActualPage = (page: number) => {
-        this.props.changeFetching(true);//true-когда пошел запорос
-        this.props.changeActualPage(page);
-        getApiUsers(page,this.props.pageSize)
-            .then(data => {
-            this.props.changeFetching(false);//false--когда пошел ответ
-            this.props.setUsers(data.items);
-        });
-
+        this.props.changeActualPageThunkCreator(page, this.props.pageSize)
     }
+
     unfollowHandler = (userID: string) => {
         this.props.unfollow(userID)
     }
@@ -77,7 +71,7 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
     render() {
 
         return <>
-            {this.props.isFetching ? <Preloader/>: null}
+            {this.props.isFetching ? <Preloader/> : null}
             <ContactsPresentation changeActualPage={this.changeActualPage}
                                   unfollowHandler={this.unfollowHandler}
                                   followHandler={this.followHandler}
@@ -94,6 +88,7 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
         </>
     }
 }
+
 const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
         contacts: state.contactsPage.contact,//нам нужен не весь стейт а его часть
@@ -102,7 +97,7 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
         totalUsersCount: state.contactsPage.totalUsersCount,
         actualPage: state.contactsPage.actualPage,
         isFetching: state.contactsPage.isFetching,
-        followButtonActive:state.contactsPage.followButtonActive,
+        followButtonActive: state.contactsPage.followButtonActive,
 
     }
 }
@@ -133,13 +128,14 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
 
 //рефактор mapDispatchToProps:
 export const ContactsContainer = connect(mapStateToProps, {
-    follow:followAC,
+    follow: followAC,
     unfollow: unFollowAC,
     setUsers: setUsersAC,
     changeActualPage: actualPageAC,
     setTotalUsersCount: totalUsersCountAC,
     changeFetching: changeFetchingAC,
-    buttonTrueDisabled:buttonTrueDisabledAC,
-    buttonFalseDisabled:buttonFalseDisabledAC,
-    getUsersThunkCreator:getUsersThunkCreator, //thunk
-    })(ContactsClassComponent)
+    buttonTrueDisabled: buttonTrueDisabledAC,
+    buttonFalseDisabled: buttonFalseDisabledAC,
+    getUsersThunkCreator: getUsersThunkCreator, //thunk
+    changeActualPageThunkCreator:changeActualPageThunkCreator //thunk
+})(ContactsClassComponent)

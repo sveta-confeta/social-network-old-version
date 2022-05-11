@@ -11,8 +11,12 @@ export const getApiUsers = (actualPage: number, pageSize: number) => {
         .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
 }
 // this.props. у нас сдесь нет, все данные попадают из аргументов
-
 //в контейнерной компонете вызывая setUsers() нам нужно передать нужные данные
+
+export const onPageChange = (page:number, pageSize: number) => {
+    return instance.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${pageSize}`)
+        .then(response=> response.data)
+}
 
 export const followApi = (userID: string) => {
     return instance.post(`follow/${userID}`,
