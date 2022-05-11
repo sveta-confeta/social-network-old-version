@@ -1,3 +1,5 @@
+import {getApiUsers} from "../api/api";
+import {Dispatch} from "redux";
 
 
 let initialState: ContactsStateType = {
@@ -158,6 +160,18 @@ export const buttonFalseDisabledAC = (userID:string) => {
         userID
     } as const
 }
+
+ export const getUsersThunkCreator = (actualPage:number,pageSize:number) => {
+    return (dispatch:Dispatch) => { //запрос получение юзеров-thunk
+     dispatch(changeFetchingAC(true));//true-когда пошел запорос но запроса нет есть крутилка
+    // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.pageSize}`,{withCredentials:true}) //в api находится
+    getApiUsers(actualPage,pageSize)
+        .then(data => { //в апи из респонс уже извлекли дату
+            dispatch(changeFetchingAC(false));//false--когда пошел ответ
+            dispatch(setUsersAC(data.items)); //теперь просто из даты извлекаем наши нужные данные
+            dispatch(totalUsersCountAC(data.totalCount));
+        });
+}}
 
 
 

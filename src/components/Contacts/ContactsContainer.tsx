@@ -4,7 +4,7 @@ import {AppRootStateType} from "../../redux/redux-store";
 import {
     actualPageAC, buttonFalseDisabledAC, buttonTrueDisabledAC, changeFetchingAC,
     ContactsType,
-    followAC,
+    followAC, getUsersThunkCreator,
     setUsersAC,
     totalUsersCountAC,
     unFollowAC
@@ -34,20 +34,15 @@ type MapDispatchPropsType = {
     changeFollowButtonActive:(value:boolean,userId:string)=> void
     buttonTrueDisabled:(userID:string)=>void,
     buttonFalseDisabled:(userID:string)=>void,
+    getUsersThunkCreator:(actualPage:number,pageSize:number)=>void
 }
 export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
 //классовая компонета с подключением к серверу
 export class ContactsClassComponent extends React.Component<ContactsPropsType> {
     componentDidMount() { //вмонтирование происходит 1 раз а дальше апдейты
-        this.props.changeFetching(true);//true-когда пошел запорос но запроса нет есть крутилка
-        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.actualPage}&count=${this.props.pageSize}`,{withCredentials:true}) //в api находится
-        getApiUsers(this.props.actualPage,this.props.pageSize)
-            .then(data => { //в апи из респонс уже извлекли дату
-           this.props.changeFetching(false);//false--когда пошел ответ
-            this.props.setUsers(data.items); //теперь просто из даты извлекаем наши нужные данные
-            this.props.setTotalUsersCount(data.totalCount);
-         });
+        this.props.getUsersThunkCreator(this.props.actualPage,this.props.pageSize);
+
     }
 
     changeActualPage = (page: number) => {
@@ -99,8 +94,6 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
         </>
     }
 }
-
-
 const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
         contacts: state.contactsPage.contact,//нам нужен не весь стейт а его часть
@@ -148,4 +141,5 @@ export const ContactsContainer = connect(mapStateToProps, {
     changeFetching: changeFetchingAC,
     buttonTrueDisabled:buttonTrueDisabledAC,
     buttonFalseDisabled:buttonFalseDisabledAC,
+    getUsersThunkCreator:getUsersThunkCreator, //thunk
     })(ContactsClassComponent)
