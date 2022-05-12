@@ -2,6 +2,7 @@ import {v1} from "uuid";
 import {PostType} from "./state";
 import {Dispatch} from "redux";
 import {profileApi} from "../api/api";
+import {changeFetchingAC, changeFetchingACType} from "./contactsReducer";
 
 export type ProfileType = {
     profilePosts: Array<PostType>
@@ -89,7 +90,7 @@ export const profileReducer = (state: ProfileType = initialState, action: Action
     }
 }
 
-type ActionType = AddPostActionType | UpdateNewPostTextActionType | SetPrifileUsersACType;
+type ActionType = AddPostActionType | UpdateNewPostTextActionType | SetPrifileUsersACType | changeFetchingACType;
 
 export type AddPostActionType = ReturnType<typeof addPostAC>
 
@@ -119,8 +120,10 @@ export const setProfileUsers = (user:ProfileUserType) => {
 }
 
 export const profileThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
+    dispatch(changeFetchingAC(true));
     profileApi(userID)
     .then(data=>{
+        dispatch(changeFetchingAC(false));
         dispatch(setProfileUsers(data));
 
     })

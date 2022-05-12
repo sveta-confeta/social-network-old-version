@@ -3,6 +3,7 @@ import s from "./Dialogs.module.css"
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 import { DialogsItemType} from "../../../redux/state";
+import { Navigate } from "react-router-dom";
 
 
 
@@ -10,6 +11,7 @@ export type DialogsPropsType = {
     dialogsPage: DialogsItemType
     onchangeDialog:(newDialog:string)=>void
     clickAddDialog:()=>void
+    isAuth:boolean
 
 
 }

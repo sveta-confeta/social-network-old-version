@@ -6,7 +6,8 @@ import {ProfileUserType} from "../../../redux/profileReducer";
 
 
 type ProfilePropsType={
-    profile:ProfileUserType | null;
+    profile:ProfileUserType | null
+
 
 }
 
@@ -16,9 +17,7 @@ export const Profile = (props: ProfilePropsType) => {
     return (
         <div className={s.content}>
             <ProfileInfo profile={props.profile}/>
-            <MyPostsContainer
-
-            />
+            <MyPostsContainer/>
         </div>
     )
 }

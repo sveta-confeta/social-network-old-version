@@ -4,12 +4,14 @@ import {ProfileUserType} from "../../../../redux/profileReducer";
 import logo from './../../../../img/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
 
+
 type ProfileInfoPropsType = {
-    profile: ProfileUserType | null;
+    profile: ProfileUserType | null
 }
 
 
 const ProfileInfo = (props: ProfileInfoPropsType) => {
+
     if (!props.profile) {
         return <Preloader/>  //если нет профайла то крутилка
     }

@@ -68,7 +68,7 @@ type unFollowACType = ReturnType<typeof unFollowAC>;
 type setUsersACType= ReturnType<typeof setUsersAC>
 type actualPageACType=ReturnType<typeof actualPageAC>
 type totalUsersCountACType=ReturnType<typeof totalUsersCountAC>
-type changeFetchingACType=ReturnType<typeof changeFetchingAC>
+export type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 type buttonTrueDisabledACType=ReturnType<typeof buttonTrueDisabledAC>
 type buttonFalseDisabledACType=ReturnType<typeof buttonFalseDisabledAC>
 

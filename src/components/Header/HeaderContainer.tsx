@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 
 class HeaderContainer extends React.Component<AuthPropsType> {
     componentDidMount() {
-        this.props.headerAuthThunkCreator(); //Thunk гет запрос авторизации
+        this.props.headerAuthThunkCreator(); //Thunk гет запрос моей авторизации
     }
 
     render() {

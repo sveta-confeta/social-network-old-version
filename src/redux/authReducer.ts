@@ -8,7 +8,7 @@ export type AuthType = {
     login: string | null,
     email: string | null,
     isFetching: boolean,
-    isAuth:boolean
+    isAuth:boolean //это flag
 }
 
 // let auth:authType= {

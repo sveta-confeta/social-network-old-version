@@ -10,6 +10,7 @@ import {DialogsContainer} from "./components/pages/Dialogs/DialogsContainer";
 import {ContactsContainer} from "./components/Contacts/ContactsContainer";
 import ProfileContainer from "./components/pages/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
+import {Login} from "./components/Login/Login";
 
 
 
@@ -31,6 +32,7 @@ function App() {
                     <Route path='/helping' element={<Helping/>}/>
                     <Route path='/helping' element={<Helping/>}/>
                     <Route path='/contacts' element={<ContactsContainer/>}/>
+                    <Route path='/login' element={<Login/>}/>
                     {/*<Route path='*' element={<NotFoundPage/>}/> -если не найдены страницы можно оформить и отобразить эту компоненту*/}
                 </Routes>
             </div>

@@ -3,10 +3,12 @@ import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {profileThunkCreator, ProfileUserType, setProfileUsers} from "../../../redux/profileReducer";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import { useLocation, useNavigate, useParams} from "react-router-dom";
+import {AuthRedirect} from "../../Util/AuthRedirect";
 
 type MapStatePropsType = {
-    profile: ProfileUserType | null;
+    profile: ProfileUserType | null
+
 }
 type mapDispatchToPropsType = {
     setProfileUsers: (user: ProfileUserType) => void
@@ -24,18 +26,20 @@ class ProfileContainer extends React.Component<ProfilePropsType> {
     }
 
     // let profileId = this.props.router.params.profileId;
+
     render() {
         return (
-
-            <Profile {...this.props} profile={this.props.profile}/>
+            <Profile {...this.props} profile={this.props.profile} />
         )
     }
 }
 
+
 let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
    // debugger
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+
     }
 }
 
@@ -56,5 +60,5 @@ export const withRouter = (Component: JSXElementConstructor<any>): JSXElementCon
     return ComponentWithRouterProp;
 }
 
-export default connect(mapStateToProps, {setProfileUsers,
-    profileThunkCreator})(withRouter(ProfileContainer));
+export default AuthRedirect(connect(mapStateToProps, {setProfileUsers,
+    profileThunkCreator})(withRouter(ProfileContainer)));
