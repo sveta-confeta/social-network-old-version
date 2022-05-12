@@ -33,3 +33,9 @@ export const profileApi = (userID: string) => {
     return instance.get(`profile/` + userID)
         .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
 }
+
+export const headerApiAuth=()=>{
+    return instance.get(`auth/me`)
+        .then(response => response.data)
+
+}

@@ -1,4 +1,6 @@
 import {changeFetchingAC} from "./contactsReducer";
+import {Dispatch} from "redux";
+import {headerApiAuth} from "../api/api";
 
 
 export type AuthType = {
@@ -33,7 +35,6 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
         case 'CHANGE-FETCHING':{
             return {...state,isFetching:action.value}
         }
-
         default:
             return state;
 
@@ -45,18 +46,17 @@ type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 
 
-export const setUserDataAC = (id: number, email: string, login: string) => {
-    return {
-        type: "SET-USER-DATA",
-        data: {
-            id,
-            email,
-            login,
-        },
+export const setUserDataAC = (id: number, email: string, login: string) =>
+    ({type: "SET-USER-DATA", data: {id, email, login,}} as const);
 
-
-    } as const
+export const headerAuthThunkCreator=()=>(dispatch:Dispatch)=>{
+    headerApiAuth()
+        .then(data=>{
+            if (data.resultCode===0){
+                let {id,email,login} = data.data //деструктуризация
+                dispatch(setUserDataAC(id,email,login))
+            }
+        })
 }
-
 
 
