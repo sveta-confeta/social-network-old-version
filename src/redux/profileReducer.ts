@@ -1,5 +1,7 @@
 import {v1} from "uuid";
 import {PostType} from "./state";
+import {Dispatch} from "redux";
+import {profileApi} from "../api/api";
 
 export type ProfileType = {
     profilePosts: Array<PostType>
@@ -114,4 +116,12 @@ export const setProfileUsers = (user:ProfileUserType) => {
         type: "SET-PROFILE-USERS",
         user,
     } as const
+}
+
+export const profileThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
+    profileApi(userID)
+    .then(data=>{
+        dispatch(setProfileUsers(data));
+
+    })
 }

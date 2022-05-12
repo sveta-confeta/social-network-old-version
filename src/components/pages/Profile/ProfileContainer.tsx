@@ -1,17 +1,16 @@
 import React, {JSXElementConstructor} from "react";
 import {Profile} from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
-import {ProfileUserType, setProfileUsers} from "../../../redux/profileReducer";
+import {profileThunkCreator, ProfileUserType, setProfileUsers} from "../../../redux/profileReducer";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import {profileApi} from "../../../api/api";
 
 type MapStatePropsType = {
     profile: ProfileUserType | null;
 }
 type mapDispatchToPropsType = {
     setProfileUsers: (user: ProfileUserType) => void
+    profileThunkCreator:(userID:string)=>void
 }
 
 export type ProfilePropsType = MapStatePropsType & mapDispatchToPropsType;
@@ -20,11 +19,8 @@ export type ProfilePropsType = MapStatePropsType & mapDispatchToPropsType;
 class ProfileContainer extends React.Component<ProfilePropsType> {
     componentDidMount() {
         //@ts-ignore
-        let userID:string = this.props.router.params.userID;
-        profileApi(userID)
-            .then(data=> {
-            this.props.setProfileUsers(data); //передаем через матчдиспатчпропс сразу в коннект
-        })
+         let userID:string = this.props.router.params.userID;
+         this.props.profileThunkCreator(userID);
     }
 
     // let profileId = this.props.router.params.profileId;
@@ -60,4 +56,5 @@ export const withRouter = (Component: JSXElementConstructor<any>): JSXElementCon
     return ComponentWithRouterProp;
 }
 
-export default connect(mapStateToProps, {setProfileUsers})(withRouter(ProfileContainer));
+export default connect(mapStateToProps, {setProfileUsers,
+    profileThunkCreator})(withRouter(ProfileContainer));
