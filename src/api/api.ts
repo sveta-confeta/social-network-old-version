@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance=axios.create({
     withCredentials: true,
-    headers: {'API-KEY': 'f3162e35-770f-487f-b065-e5df2b65ff7d'},
+    headers: {'API-KEY': 'ed2301ec-5c98-454a-b34e-49534b216f8b'},
     baseURL:`https://social-network.samuraijs.com/api/1.0/`   //базовый урл автоматически приклеивается к строке
 })
 
@@ -20,7 +20,6 @@ export const onPageChange = (page:number, pageSize: number) => {
 
 export const followApi = (userID: string) => {
     return instance.post(`follow/${userID}`,
-
     ) //withCredentials в пост 3им параметром и ключ с сайта
         .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
 }

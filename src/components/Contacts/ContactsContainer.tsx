@@ -4,10 +4,10 @@ import {AppRootStateType} from "../../redux/redux-store";
 import {
     actualPageAC, buttonFalseDisabledAC, buttonTrueDisabledAC, changeActualPageThunkCreator, changeFetchingAC,
     ContactsType,
-    followAC, getUsersThunkCreator,
+     followThunkCreator, getUsersThunkCreator,
     setUsersAC,
     totalUsersCountAC,
-    unFollowAC
+    unfollowThunkCreator
 } from "../../redux/contactsReducer";
 
 import {ContactsPresentation} from "./ContactsPresentation";
@@ -25,8 +25,6 @@ type MapStatePropsType = {
 
 }
 type MapDispatchPropsType = {
-    follow: (userID: string) => void
-    unfollow: (userID: string) => void
     setUsers: (users: Array<ContactsType>) => void
     changeActualPage: (actualPage: number) => void
     setTotalUsersCount: (totalCount: number) => void
@@ -35,6 +33,8 @@ type MapDispatchPropsType = {
     buttonFalseDisabled: (userID: string) => void,
     getUsersThunkCreator: (actualPage: number, pageSize: number) => void
     changeActualPageThunkCreator:(page:number, pageSize:number)=>void
+    unfollowThunkCreator:(userID: string)=>void
+    followThunkCreator:(userID: string)=>void
 }
 export type ContactsPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
 
@@ -44,17 +44,16 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
         this.props.getUsersThunkCreator(this.props.actualPage, this.props.pageSize); //get запрос за пользователями
 
     }
-
     changeActualPage = (page: number) => {
         this.props.changeActualPageThunkCreator(page, this.props.pageSize)
     }
 
     unfollowHandler = (userID: string) => {
-        this.props.unfollow(userID)
+        this.props.unfollowThunkCreator(userID)
     }
 
     followHandler = (userID: string) => {
-        this.props.follow(userID)
+        this.props.followThunkCreator(userID)
     }
 
     //
@@ -80,8 +79,7 @@ export class ContactsClassComponent extends React.Component<ContactsPropsType> {
                                   actualPage={this.props.actualPage}
                                   contacts={this.props.contacts}
                                   followButtonActive={this.props.followButtonActive}
-                                  buttonTrueDisabled={this.props.buttonTrueDisabled}
-                                  buttonFalseDisabled={this.props.buttonFalseDisabled}
+
 
             />
 
@@ -128,8 +126,6 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
 
 //рефактор mapDispatchToProps:
 export const ContactsContainer = connect(mapStateToProps, {
-    follow: followAC,
-    unfollow: unFollowAC,
     setUsers: setUsersAC,
     changeActualPage: actualPageAC,
     setTotalUsersCount: totalUsersCountAC,
@@ -137,5 +133,7 @@ export const ContactsContainer = connect(mapStateToProps, {
     buttonTrueDisabled: buttonTrueDisabledAC,
     buttonFalseDisabled: buttonFalseDisabledAC,
     getUsersThunkCreator: getUsersThunkCreator, //thunk
-    changeActualPageThunkCreator:changeActualPageThunkCreator //thunk
+    changeActualPageThunkCreator:changeActualPageThunkCreator, //thunk
+    unfollowThunkCreator:unfollowThunkCreator,//thunk
+    followThunkCreator:followThunkCreator,//thunk
 })(ContactsClassComponent)

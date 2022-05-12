@@ -1,4 +1,4 @@
-import {getApiUsers, onPageChange} from "../api/api";
+import {followApi, getApiUsers, onPageChange, unfollowApi} from "../api/api";
 import {Dispatch} from "redux";
 
 
@@ -183,6 +183,28 @@ export const changeActualPageThunkCreator=(page:number,pageSize:number) => {
                 dispatch(setUsersAC(data.items)); //теперь просто из даты извлекаем наши нужные данные
             });
     }}
+export const unfollowThunkCreator = (userID:string)=> {
+    return (dispatch:Dispatch) => {
+        dispatch(buttonTrueDisabledAC(userID)) //кнопка активна перед запросом
+        unfollowApi(userID)
+            .then(data => {
+                if (data.resultCode === 0) { //сервер подтвердил что подписка произошла
+                    dispatch(unFollowAC(userID));//false--когда пошел ответ
+                }
+                dispatch( buttonFalseDisabledAC(userID)) //кнопка disabled после запроса
+            })
+    }}
 
+export const followThunkCreator=(userID:string) => {
+    return (dispatch:Dispatch) => {
+        dispatch(buttonTrueDisabledAC(userID)) //кнопка активна перед запросом
+        followApi(userID)
+            .then(data => {
+                if (data.resultCode === 0) { //сервер подтвердил что подписка произошла
+                    dispatch(followAC(userID));//false--когда пошел ответ
+                }
+                dispatch(buttonFalseDisabledAC(userID)) //кнопка disabled после запроса
+            })
+    }}
 
 

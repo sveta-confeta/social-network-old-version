@@ -3,7 +3,6 @@ import s from "./Contacts.module.css";
 import userPfoto from "../../img/User-PNG-Icon.png";
 import {ContactsType} from "../../redux/contactsReducer";
 import {NavLink} from 'react-router-dom';
-import {followApi, unfollowApi} from "../../api/api";
 
 type ContactsPresentationType = {
     changeActualPage: (page: number) => void
@@ -14,8 +13,6 @@ type ContactsPresentationType = {
     actualPage: number
     contacts: Array<ContactsType>
     followButtonActive: string[],
-    buttonTrueDisabled:(userID:string)=>void
-    buttonFalseDisabled:(userID:string)=>void
 
 
 }
@@ -31,27 +28,13 @@ export const ContactsPresentation = (props: ContactsPresentationType) => {
     }
 
     const followHandler = (userID: string) => {
-        props.buttonTrueDisabled(userID) //кнопка активна перед запросом
-        followApi(userID)
-            .then(data => {
-                if (data.resultCode === 0) { //сервер подтвердил что подписка произошла
-                    props.followHandler(userID)
-                }
-                props.buttonFalseDisabled(userID) //кнопка disabled после запроса
-            })
-
-
+        props.followHandler(userID)
     }
+
     const unfollowHandler = (userID: string) => {
-        props.buttonTrueDisabled(userID) //кнопка активна перед запросом
-        unfollowApi(userID)
-            .then(data => {
-                if (data.resultCode === 0) { //сервер подтвердил что подписка произошла
-                    props.unfollowHandler(userID)
-                }
-                    props.buttonFalseDisabled(userID) //кнопка disabled после запроса
-            }
-            )}
+        debugger
+        props.unfollowHandler(userID)
+    }
 
     return (
         // возращает то же самое что и функциональная компонента, только пропсы превращаются в this.props
