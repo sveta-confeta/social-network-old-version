@@ -5,6 +5,7 @@ import {AppRootStateType} from "../../../redux/redux-store";
 import {profileThunkCreator, ProfileUserType, setProfileUsers} from "../../../redux/profileReducer";
 import { useLocation, useNavigate, useParams} from "react-router-dom";
 import {AuthRedirect} from "../../Util/AuthRedirect";
+import {compose} from "redux";
 
 type MapStatePropsType = {
     profile: ProfileUserType | null
@@ -60,5 +61,10 @@ export const withRouter = (Component: JSXElementConstructor<any>): JSXElementCon
     return ComponentWithRouterProp;
 }
 
-export default AuthRedirect(connect(mapStateToProps, {setProfileUsers,
-    profileThunkCreator})(withRouter(ProfileContainer)));
+// export default AuthRedirect(connect(mapStateToProps, {setProfileUsers,
+//     profileThunkCreator})(withRouter(ProfileContainer)));//переписали на compose
+export default compose<React.ComponentType>(connect(mapStateToProps, {setProfileUsers,
+    profileThunkCreator}),
+    withRouter,
+    AuthRedirect)
+(ProfileContainer)

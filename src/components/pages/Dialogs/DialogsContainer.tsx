@@ -4,6 +4,9 @@ import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {AuthRedirect} from "../../Util/AuthRedirect";
+import {compose} from "redux";
+import {profileThunkCreator, setProfileUsers} from "../../../redux/profileReducer";
+import {withRouter} from "../Profile/ProfileContainer";
 
 // export const DialogsContainer = (props: DialogsPropsType) => {
 //
@@ -37,4 +40,7 @@ return {
     },
 }}
 
-export const DialogsContainer=AuthRedirect(connect(mapStateToProps,mapDispatchToProps)(Dialogs) )//как бы мы dialog законектили к stor-у при помощи react-redux
+//eport const DialogsContainer=AuthRedirect(connect(mapStateToProps,mapDispatchToProps)(Dialogs) )//как бы мы dialog законектили к stor-у при помощи react-redux
+export const  DialogsContainer=compose<React.ComponentType>(connect(mapStateToProps, mapDispatchToProps),
+    AuthRedirect)
+(Dialogs);
