@@ -5,8 +5,8 @@ import {connect} from "react-redux";
 import {AppRootStateType} from "../../../redux/redux-store";
 import {AuthRedirect} from "../../Util/AuthRedirect";
 import {compose} from "redux";
-import {profileThunkCreator, setProfileUsers} from "../../../redux/profileReducer";
-import {withRouter} from "../Profile/ProfileContainer";
+
+
 
 // export const DialogsContainer = (props: DialogsPropsType) => {
 //

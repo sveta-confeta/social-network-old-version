@@ -3,6 +3,7 @@ import s from './ProfileInfo.module.css';
 import {ProfileUserType} from "../../../../redux/profileReducer";
 import logo from './../../../../img/User-PNG-Icon.png'
 import {Preloader} from "../../../Util/Preloader";
+import {ProfileStatus} from "./ProfileStatus/ProfileStatus";
 
 
 type ProfileInfoPropsType = {
@@ -25,6 +26,8 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
                          src={props.profile.photos.small !== null ? props.profile.photos.small : logo}/>
                     <div className={s.name}>{props.profile.fullName}</div>
                 </div>
+                {/*//cтатус пользователя*/}
+                <ProfileStatus status={'Я FRONT'}/>
                 <div className={s.me}><span>About me:</span> {props.profile.aboutMe}</div>
                 <div className={s.contacts}>Contacts:</div>
                 <ul className={s.contactsList}>
