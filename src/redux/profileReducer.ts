@@ -1,32 +1,33 @@
 import {v1} from "uuid";
 import {PostType} from "./state";
 import {Dispatch} from "redux";
-import {profileApi} from "../api/api";
+import {DataType, profileApi} from "../api/api";
 import {changeFetchingAC, changeFetchingACType} from "./contactsReducer";
 
 export type ProfileType = {
     profilePosts: Array<PostType>
     valueTextarea: string
     profile: ProfileUserType | null,
+    status: string,
 
 }
 
-export type ProfileUserType={
+export type ProfileUserType = {
     "aboutMe": string
     "contacts": {
         "facebook": string
         "website": null,
-        "vk":string
-        "twitter":string
-        "instagram":string
+        "vk": string
+        "twitter": string
+        "instagram": string
         "youtube": null,
         "github": string
         "mainLink": null
     },
     "lookingForAJob": boolean
-    "lookingForAJobDescription":string
+    "lookingForAJobDescription": string
     "fullName": string
-    "userId":number
+    "userId": number
     "photos": {
         "small": string,
         "large": string
@@ -63,6 +64,7 @@ let initialState = {
     ],
     valueTextarea: '',
     profile: null,
+    status: "",
 }
 
 
@@ -81,8 +83,11 @@ export const profileReducer = (state: ProfileType = initialState, action: Action
 
         }
         case  "SET-PROFILE-USERS": {
-            return {...state,profile:action.user}
+            return {...state, profile: action.user}
 
+        }
+        case "SET-STATUS-PROFILE": {
+            return {...state, status: action.status}
         }
         default:
             return state;
@@ -90,12 +95,18 @@ export const profileReducer = (state: ProfileType = initialState, action: Action
     }
 }
 
-type ActionType = AddPostActionType | UpdateNewPostTextActionType | SetPrifileUsersACType | changeFetchingACType;
+type ActionType = AddPostActionType
+    | UpdateNewPostTextActionType
+    | SetPrifileUsersACType
+    | changeFetchingACType
+    | GetStatusProfileACType
 
 export type AddPostActionType = ReturnType<typeof addPostAC>
 
 export type UpdateNewPostTextActionType = ReturnType<typeof onChangeHandlerAC>
-export type SetPrifileUsersACType=ReturnType<typeof setProfileUsers>
+export type SetPrifileUsersACType = ReturnType<typeof setProfileUsers>
+export type GetStatusProfileACType = ReturnType<typeof getStatusProfileAC>
+
 
 
 //cдесь больше не должно быть в коде никаких функция перерисовки
@@ -112,19 +123,52 @@ export const onChangeHandlerAC = (newText: string) => {   //передаем с�
         newText: newText
     } as const
 }
-export const setProfileUsers = (user:ProfileUserType) => {
+export const setProfileUsers = (user: ProfileUserType) => {
     return {
         type: "SET-PROFILE-USERS",
         user,
     } as const
 }
 
-export const profileThunkCreator=(userID:string)=>(dispatch:Dispatch)=>{
-    dispatch(changeFetchingAC(true));
-    profileApi(userID)
-    .then(data=>{
-        dispatch(changeFetchingAC(false));
-        dispatch(setProfileUsers(data));
+export const getStatusProfileAC = (status: string) => { //у нас могут быть разные санки которые меняют один АС
+    return {
+        type: "SET-STATUS-PROFILE",
+        status,
+    } as const
+}
 
-    })
+
+export const profileThunkCreator = (userID: string) => (dispatch: Dispatch) => {
+    dispatch(changeFetchingAC(true));
+    profileApi.getProfile(userID)
+        .then(data => {
+            dispatch(changeFetchingAC(false));
+            dispatch(setProfileUsers(data));
+
+        })
+
+}
+
+export const getStatusProfileThunkCreator = (userID: string) => (dispatch: Dispatch) => {
+    dispatch(changeFetchingAC(true));
+    profileApi.getStatus(userID)
+        .then(res => {
+            debugger
+            dispatch(changeFetchingAC(false));
+            dispatch(getStatusProfileAC(res.statusText));//прямо в data сидит текст строки
+
+        })
+
+}
+export const updateStatusProfileThunkCreator = (status:string) => (dispatch: Dispatch) => {
+    dispatch(changeFetchingAC(true));
+    profileApi.updateStatus(status)
+        .then(data => {
+            if (data.resultCode === 0) {
+                debugger
+                dispatch(changeFetchingAC(false));
+                dispatch(getStatusProfileAC(status));  //если запрос без ошибок-сетаем тот статус  в ас который получили в параметрах
+            }
+        })
+
 }

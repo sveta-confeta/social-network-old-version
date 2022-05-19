@@ -1,31 +1,43 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
+import s from './../ProfileInfo.module.css'
 
 type ProfileStatusType={
-    status:any
+    status:any,
+    updateStatusProfileThunkCreator:(status:string)=>void
 }
 
 
  export class ProfileStatus extends React.Component<ProfileStatusType>{    //делаем классовой компонетой
     state ={
-        editMode:false
+        editMode:false,
+        status:this.props.status, //заводим локальный стейт и в статусе теперь сидит то что приходит из пропсов
     }
-   activeEditMode(){
+   activeEditMode=()=>{
         this.setState({
             editMode:true
        })}
 
-     deactiveEditMode(){
+     deactiveEditMode=()=>{ //если стрелочная функция то мы не bind this
          this.setState({
-             editMode:false
-         })}
+             editMode:false,
+         })
+         this.props.updateStatusProfileThunkCreator(this.state.status); //передаем статус из локального стейта на сервер
+    }
+
+    chengeHandler=(e:ChangeEvent<HTMLInputElement>)=>{
+        this.setState({
+            status:e.currentTarget.value
+        })
+
+     }
 render(){
         return (
-            <div>{ this.state.editMode
-                ?  <input  onBlur={this.deactiveEditMode.bind(this)} autoFocus value={this.props.status}/>
-                :  <span onDoubleClick={this.activeEditMode.bind(this)}>{this.props.status}</span>
+            <>{ this.state.editMode
+                ?  <input  onChange={this.chengeHandler} onBlur={this.deactiveEditMode} autoFocus value={this.state.status}/>
+                :  <span className={s.inputsSize} onDoubleClick={this.activeEditMode}>{this.props.status}</span>
 
             }
-            </div>
+            </>
         );
     }
 

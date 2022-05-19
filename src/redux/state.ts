@@ -63,6 +63,7 @@ export let store: StoreType = {
             ],
             valueTextarea: '',
             profile: null,
+            status:'Hello',
         },
         dialogsPage: {
             dialogsItem: [

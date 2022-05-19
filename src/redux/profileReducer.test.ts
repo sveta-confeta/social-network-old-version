@@ -10,6 +10,7 @@ test('add post',()=>{
         ],
             valueTextarea: '',
         profile: null,
+        status:'hello',
     }
 
    const endState=profileReducer(startState,addPostAC());
@@ -25,6 +26,7 @@ test('"UPDATE-NEW-POST-TEXT"',()=>{
         ],
         valueTextarea: '',
         profile: null,
+        status:'hello',
     }
     let newText:string='Hallo,How are you';
 

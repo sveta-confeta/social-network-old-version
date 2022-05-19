@@ -8,6 +8,8 @@ import {ProfileStatus} from "./ProfileStatus/ProfileStatus";
 
 type ProfileInfoPropsType = {
     profile: ProfileUserType | null
+    status:string,
+    updateStatusProfileThunkCreator:(status:string)=>void
 }
 
 
@@ -27,7 +29,7 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
                     <div className={s.name}>{props.profile.fullName}</div>
                 </div>
                 {/*//cтатус пользователя*/}
-                <ProfileStatus status={'Я FRONT'}/>
+                Status: <ProfileStatus status={props.status} updateStatusProfileThunkCreator={props.updateStatusProfileThunkCreator}/>
                 <div className={s.me}><span>About me:</span> {props.profile.aboutMe}</div>
                 <div className={s.contacts}>Contacts:</div>
                 <ul className={s.contactsList}>

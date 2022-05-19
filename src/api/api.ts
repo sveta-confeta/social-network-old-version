@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 const instance=axios.create({
     withCredentials: true,
@@ -29,13 +29,40 @@ export const unfollowApi = (userID: string) => {
         .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
 }
 
-export const profileApi = (userID: string) => {
-    return instance.get(`profile/` + userID)
-        .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
-}
+
 
 export const headerApiAuth=()=>{
     return instance.get(`auth/me`)
         .then(response => response.data)
 
+}
+
+export const profileApi= {
+    getProfile(userID: string) {
+        return instance.get(`profile/` + userID)
+            .then(response => response.data)  //возращаем из респонса только дату.теперь наш респонс в компоненте явдляется датой
+    },
+    getStatus(userID: string) {
+        return instance.get<string>(`/profile/status/` + userID) //запрос статуса пользователя
+
+    },
+    updateStatus(status:string) {   //сдесь текст который пользователь ввел
+        return instance.put<PutStatus>(`profile/status`, {status:status}) //отправляем на сервак объект со свойством status
+            .then(response => response.data)
+
+    }
+}
+// updateStatus(status: string) {
+//     return instance.put<{ data: string }, AxiosResponse<ResponseType<{}>>>(`profile/status`, {status})
+// }
+//отправляем на сервак объект со свойством status?
+
+export type DataType={
+    status:string
+}
+
+export type PutStatus={
+    resultCode: number,
+    messages: string[],
+    data:{}
 }
