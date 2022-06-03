@@ -23,13 +23,12 @@ function App() {
             <Navbar navbarPage={state.navbarPage}/>
             <div className="app-wrapper-content">
                 <Routes>
-                    {/*<Route path='/profile' element={<ProfileContainer/>}/>*/}
+                    <Route path='/profile' element={<ProfileContainer/>}/>
                     <Route path='/profile/:userID' element={<ProfileContainer/>}/>
                     <Route path='/dialogs/*' element={<DialogsContainer
                         />}/>
                     <Route path='/news' element={<News/>}/>
                     <Route path='/music' element={<Music/>}/>
-                    <Route path='/helping' element={<Helping/>}/>
                     <Route path='/helping' element={<Helping/>}/>
                     <Route path='/contacts' element={<ContactsContainer/>}/>
                     <Route path='/login' element={<Login/>}/>

@@ -8,20 +8,20 @@ import {
     ProfileUserType,
     setProfileUsers, updateStatusProfileThunkCreator
 } from "../../../redux/profileReducer";
-import { useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {AuthRedirect} from "../../Util/AuthRedirect";
 import {compose} from "redux";
 
 type MapStatePropsType = {
     profile: ProfileUserType | null,
-    status:string,
+    status: string,
 
 }
 type mapDispatchToPropsType = {
     setProfileUsers: (user: ProfileUserType) => void
-    profileThunkCreator:(userID:string)=>void
-    getStatusProfileThunkCreator:(userID:string)=>void
-    updateStatusProfileThunkCreator:(status:string)=>void
+    profileThunkCreator: (userID: string) => void
+    getStatusProfileThunkCreator: (userID: string) => void
+    updateStatusProfileThunkCreator: (status: string) => void
 }
 
 export type ProfilePropsType = MapStatePropsType & mapDispatchToPropsType;
@@ -30,12 +30,16 @@ export type ProfilePropsType = MapStatePropsType & mapDispatchToPropsType;
 class ProfileContainer extends React.Component<ProfilePropsType> {
     componentDidMount() {
         //@ts-ignore
-         let userID:string = this.props.router.params.userID;
-         // if(!userID){
-         //     userID='22634'
-         // }
-         this.props.profileThunkCreator(userID); //запрос на добавление профиля юзера
-        this.props.getStatusProfileThunkCreator(userID); //запрос на добавление статуса юзера
+        let userID: string = this.props.router.params.userID;
+        // if(!userID){
+        //     userID='22634'
+        // }
+        this.props.profileThunkCreator(userID); //запрос на добавление профиля юзера
+
+
+        this.props.getStatusProfileThunkCreator(userID) //запрос на добавление статуса юзера,
+
+
     }
 
     // let profileId = this.props.router.params.profileId;
@@ -53,7 +57,7 @@ class ProfileContainer extends React.Component<ProfilePropsType> {
 let mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     return {
         profile: state.profilePage.profile,
-         status: state.profilePage.status,
+        status: state.profilePage.status,
 
     }
 }
@@ -77,8 +81,10 @@ export const withRouter = (Component: JSXElementConstructor<any>): JSXElementCon
 
 // export default AuthRedirect(connect(mapStateToProps, {setProfileUsers,
 //     profileThunkCreator})(withRouter(ProfileContainer)));//переписали на compose
-export default compose<React.ComponentType>(connect(mapStateToProps, {setProfileUsers,
-    profileThunkCreator,updateStatusProfileThunkCreator,getStatusProfileThunkCreator}),
+export default compose<React.ComponentType>(connect(mapStateToProps, {
+        setProfileUsers,
+        profileThunkCreator, updateStatusProfileThunkCreator, getStatusProfileThunkCreator
+    }),
     withRouter,
     AuthRedirect)
 (ProfileContainer)

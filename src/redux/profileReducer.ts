@@ -155,7 +155,7 @@ export const getStatusProfileThunkCreator = (userID: string) => (dispatch: Dispa
         .then(res => {
             debugger
             dispatch(changeFetchingAC(false));
-            dispatch(getStatusProfileAC(res.statusText));//прямо в data сидит текст строки
+            dispatch(getStatusProfileAC(res.data));//прямо в data сидит текст строки
 
         })
 

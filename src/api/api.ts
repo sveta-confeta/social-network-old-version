@@ -1,8 +1,8 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
 const instance=axios.create({
     withCredentials: true,
-    headers: {'API-KEY': 'ed2301ec-5c98-454a-b34e-49534b216f8b'},
+    headers: {'API-KEY': '58a7efea-0996-40f4-b80c-e4fc1b5e4389'},
     baseURL:`https://social-network.samuraijs.com/api/1.0/`   //базовый урл автоматически приклеивается к строке
 })
 
@@ -31,11 +31,31 @@ export const unfollowApi = (userID: string) => {
 
 
 
-export const headerApiAuth=()=>{
+export const headerApiAuth=()=>{   //получить мои данные о логине
     return instance.get(`auth/me`)
         .then(response => response.data)
 
 }
+
+ export const loginApi={
+    postLogin(data:DataLoginType){   //положить на сайт мои данные ,создать мои данные.POST запро
+          return instance.post<PostStatus>(`auth/login`, data)
+
+
+    },
+     deleteLogin(){
+         return instance.delete<PostStatus>(`auth/login`)
+
+     }
+
+ }
+
+ export type DataLoginType={
+    email:string,
+     password:string,
+     rememberMe:boolean,
+
+ }
 
 export const profileApi= {
     getProfile(userID: string) {
@@ -64,5 +84,10 @@ export type DataType={
 export type PutStatus={
     resultCode: number,
     messages: string[],
-    data:{}
+    data:{},
+}
+export type PostStatus={
+    resultCode: number,
+    messages: string[],
+    data:{userId:number},
 }

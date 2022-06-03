@@ -1,40 +1,51 @@
 import React, {ChangeEvent} from 'react';
 import s from './../ProfileInfo.module.css'
 
-type ProfileStatusType={
-    status:any,
-    updateStatusProfileThunkCreator:(status:string)=>void
+type ProfileStatusType = {
+    status: any,
+    updateStatusProfileThunkCreator: (status: string) => void
 }
 
 
- export class ProfileStatus extends React.Component<ProfileStatusType>{    //делаем классовой компонетой
-    state ={
-        editMode:false,
-        status:this.props.status, //заводим локальный стейт и в статусе теперь сидит то что приходит из пропсов
+export class ProfileStatus extends React.Component<ProfileStatusType> {    //делаем классовой компонетой
+    state = {
+        editMode: false,
+        status: this.props.status, //заводим локальный стейт и в статусе теперь сидит то что приходит из пропсов
     }
-   activeEditMode=()=>{
+    activeEditMode = () => {
         this.setState({
-            editMode:true
-       })}
-
-     deactiveEditMode=()=>{ //если стрелочная функция то мы не bind this
-         this.setState({
-             editMode:false,
-         })
-         this.props.updateStatusProfileThunkCreator(this.state.status); //передаем статус из локального стейта на сервер
-    }
-
-    chengeHandler=(e:ChangeEvent<HTMLInputElement>)=>{
-        this.setState({
-            status:e.currentTarget.value
+            editMode: true
         })
+    }
 
-     }
-render(){
+    deactiveEditMode = () => { //если стрелочная функция то мы не bind this
+        this.setState({
+            editMode: false
+        })
+        this.props.updateStatusProfileThunkCreator(this.state.status); //передаем статус из локального стейта на сервер
+    }
+
+    chengeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            status: e.currentTarget.value
+        })
+    }
+
+    componentDidUpdate(prevProps: Readonly<ProfileStatusType>, prevState: Readonly<{}>, snapshot?: any) {
+        if (prevProps.status !== this.props.status) { //идет сравнение что старый статус не равен новому
+            this.setState({
+                status:this.props.status
+            })
+        }
+    }
+
+    render() {
         return (
-            <>{ this.state.editMode
-                ?  <input  onChange={this.chengeHandler} onBlur={this.deactiveEditMode} autoFocus value={this.state.status}/>
-                :  <span className={s.inputsSize} onDoubleClick={this.activeEditMode}>{this.props.status}</span>
+            <>{this.state.editMode
+                ? <input onChange={this.chengeHandler} onBlur={this.deactiveEditMode} autoFocus
+                         value={this.state.status}/>
+                : <span className={s.inputsSize}
+                        onDoubleClick={this.activeEditMode}>{!this.props.status ? 'Напиши свой статус' : this.props.status}</span>
 
             }
             </>

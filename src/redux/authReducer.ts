@@ -1,14 +1,14 @@
 import {changeFetchingAC} from "./contactsReducer";
 import {Dispatch} from "redux";
-import {headerApiAuth} from "../api/api";
+import {DataLoginType, headerApiAuth, loginApi} from "../api/api";
 
 
 export type AuthType = {
     id: number | null,
     login: string | null,
     email: string | null,
-    isFetching: boolean,
-    isAuth:boolean //это flag
+    isAuth:boolean, //это flag
+    // authLogin:boolean,
 }
 
 // let auth:authType= {
@@ -20,8 +20,8 @@ let initialState = {
     id: null,
     email: null,
     login: null,
-    isAuth:false,  //если id,email,login пришли
-    isFetching: false,
+    isAuth:false,  //если id,email,login пришли если мы залогинены то true
+    // authLogin:false, //инициализационный логин который проверяет залогинен ли пользователь на сайте
 
 }
 
@@ -30,10 +30,10 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
     //теперь у нас под именем state-  _state.profilePage
     switch (action.type) {
         case  "SET-USER-DATA": {
-           return  {...state,...action.data,isAuth:true}
+           return  {...state,...action.data,isAuth:true}//дата это [],который мы спред оператором добавляем
         }
-        case 'CHANGE-FETCHING':{
-            return {...state,isFetching:action.value}
+        case 'AUTH-LOGIN':{
+            return {...state, isAuth:action.value}
         }
         default:
             return state;
@@ -41,21 +41,62 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
     }
 }
 
-type ActionType = setUserDataACType | changeFetchingACType;
+type ActionType = setUserDataACType | changeFetchingACType | postAuthLoginACType;
+
 type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
+type postAuthLoginACType=ReturnType<typeof postAuthLoginAC>
 
 
 export const setUserDataAC = (id: number, email: string, login: string) =>
     ({type: "SET-USER-DATA", data: {id, email, login,}} as const);
 
-export const headerAuthThunkCreator=()=>(dispatch:Dispatch)=>{
+export const postAuthLoginAC = (value:boolean) =>
+    ({type: 'AUTH-LOGIN', value} as const);
+
+
+//Thunk
+export const headerAuthThunkCreator=()=>(dispatch:Dispatch)=>{ //GET запрс за auth/me
     headerApiAuth()
         .then(data=>{
             if (data.resultCode===0){
                 let {id,email,login} = data.data //деструктуризация
-                dispatch(setUserDataAC(id,email,login))
+                dispatch(setUserDataAC(id,email,login));
+
             }
+        })
+}
+
+export const  AuthLoginThunkCreator=(data:DataLoginType)=>(dispatch:Dispatch)=>{ //Post запрос логина
+    dispatch(changeFetchingAC(true))
+    loginApi.postLogin(data)
+        .then((res) =>{
+            if (res.data.resultCode===0){
+                dispatch(changeFetchingAC(false))
+                dispatch(postAuthLoginAC(true))
+
+             }
+                // else{
+            //     dispatch(changeFetchingAC(false))
+            //     alert ('Error');
+            //
+            // }
+        })
+};
+export const LoginOutThunkCreator=()=>(dispatch:Dispatch)=>{
+    dispatch(changeFetchingAC(true))
+    loginApi.deleteLogin()
+        .then((res) =>{
+            if (res.data.resultCode===0){
+                dispatch(changeFetchingAC(false))
+                dispatch(postAuthLoginAC(false))
+
+            }
+            //else{
+            //     dispatch(changeFetchingAC(false))
+            //     alert ('Error');
+            //
+            // }
         })
 }
 
