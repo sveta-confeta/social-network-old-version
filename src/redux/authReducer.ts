@@ -1,6 +1,7 @@
 import {changeFetchingAC} from "./contactsReducer";
 import {Dispatch} from "redux";
 import {DataLoginType, headerApiAuth, loginApi} from "../api/api";
+import {errorApiAC} from "./appReducer";
 
 
 export type AuthType = {
@@ -41,11 +42,12 @@ export const authReducer = (state: AuthType = initialState, action: ActionType):
     }
 }
 
-type ActionType = setUserDataACType | changeFetchingACType | postAuthLoginACType;
+type ActionType = setUserDataACType | changeFetchingACType | postAuthLoginACType |ErrorMessageType;
 
 type setUserDataACType = ReturnType<typeof setUserDataAC>
 type changeFetchingACType=ReturnType<typeof changeFetchingAC>
 type postAuthLoginACType=ReturnType<typeof postAuthLoginAC>
+type ErrorMessageType=ReturnType<typeof errorApiAC>
 
 
 export const setUserDataAC = (id: number, email: string, login: string) =>
@@ -63,6 +65,11 @@ export const headerAuthThunkCreator=()=>(dispatch:Dispatch)=>{ //GET запрс 
                 let {id,email,login} = data.data //деструктуризация
                 dispatch(setUserDataAC(id,email,login));
 
+            } else{
+                debugger
+                dispatch(changeFetchingAC(false))
+                dispatch(errorApiAC(data.messages[0]))
+
             }
         })
 }
@@ -75,12 +82,11 @@ export const  AuthLoginThunkCreator=(data:DataLoginType)=>(dispatch:Dispatch)=>{
                 dispatch(changeFetchingAC(false))
                 dispatch(postAuthLoginAC(true))
 
-             }
-                // else{
-            //     dispatch(changeFetchingAC(false))
-            //     alert ('Error');
-            //
-            // }
+             } else{
+                dispatch(changeFetchingAC(false))
+                dispatch(errorApiAC(res.data.messages[0]))
+
+            }
         })
 };
 export const LoginOutThunkCreator=()=>(dispatch:Dispatch)=>{
@@ -91,12 +97,12 @@ export const LoginOutThunkCreator=()=>(dispatch:Dispatch)=>{
                 dispatch(changeFetchingAC(false))
                 dispatch(postAuthLoginAC(false))
 
+            } else{
+                dispatch(changeFetchingAC(false))
+                dispatch(errorApiAC(res.data.messages[0]))
+
             }
-            //else{
-            //     dispatch(changeFetchingAC(false))
-            //     alert ('Error');
-            //
-            // }
+
         })
 }
 

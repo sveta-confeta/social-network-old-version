@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {DataLoginType} from "../../api/api";
 import {AppRootStateType} from "../../redux/redux-store";
 import {Navigate} from "react-router-dom";
+import {ErrorSnackbar} from "../ErrorSnackbar/ErrorSnackbar";
 //здесь страница логина
 
 type FormikErrorType = {
@@ -52,6 +53,8 @@ export const Login = () => {
          }
 
     return <Grid container justifyContent={'center'}>
+
+        <ErrorSnackbar/>
 
         {/*//оборачиваем наши все формы тегом form..*/}
         <form onSubmit={formik.handleSubmit}>

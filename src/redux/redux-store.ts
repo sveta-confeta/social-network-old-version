@@ -5,6 +5,7 @@ import {friendsReducer} from "./friendsReducer";
 import {ContactsReducer} from "./contactsReducer";
 import {authReducer} from "./authReducer";
 import thunkMiddleware  from 'redux-thunk'
+import {appReducer} from "./appReducer";
 
 let rootReducer=combineReducers({//сюда поместим все редьюсеры
     profilePage:profileReducer,
@@ -12,6 +13,7 @@ let rootReducer=combineReducers({//сюда поместим все редьюс
     navbarPage:friendsReducer,
     contactsPage:ContactsReducer,
     auth: authReducer,
+    app:appReducer,
 });
 
 // определить автоматически тип всего объекта состояния
