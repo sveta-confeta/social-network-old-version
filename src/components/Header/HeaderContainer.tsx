@@ -1,14 +1,15 @@
 import React from "react";
 import {Header} from "./Header";
-import {headerAuthThunkCreator, LoginOutThunkCreator} from "../../redux/authReducer";
+import { LoginOutThunkCreator} from "../../redux/authReducer";
 import {AppRootStateType} from "../../redux/redux-store";
 import {connect} from "react-redux";
 
 
 class HeaderContainer extends React.Component<AuthPropsType> {
     componentDidMount() {
-        this.props.headerAuthThunkCreator(); //Thunk GET  запрос моей авторизации
-        this.props.LoginOutThunkCreator();
+        debugger
+
+        this.props.LoginOutThunkCreator();   //удаление логинизации
     }
 
 
@@ -28,7 +29,7 @@ type MapStatePropsType = {
 
 }
 type MapDispatchPropsType = {
-    headerAuthThunkCreator: () => void
+
     LoginOutThunkCreator:()=>void
 }
 export type AuthPropsType = MapStatePropsType & MapDispatchPropsType //типизация для классовой компонеты
@@ -43,6 +44,5 @@ const mapStateToProps = (state: AppRootStateType): MapStatePropsType => {
     }
 }
 export default connect(mapStateToProps, {
-    headerAuthThunkCreator: headerAuthThunkCreator,
     LoginOutThunkCreator:LoginOutThunkCreator
 })(HeaderContainer)

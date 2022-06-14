@@ -1,7 +1,7 @@
 import {changeFetchingAC} from "./contactsReducer";
 import {Dispatch} from "redux";
 import {DataLoginType, headerApiAuth, loginApi} from "../api/api";
-import {errorApiAC} from "./appReducer";
+import {errorApiAC, initializedAC} from "./appReducer";
 
 
 export type AuthType = {
@@ -58,20 +58,37 @@ export const postAuthLoginAC = (value:boolean) =>
 
 
 //Thunk
-export const headerAuthThunkCreator=()=>(dispatch:Dispatch)=>{ //GET запрс за auth/me
+export const headerAuthThunkCreator=()=> async (dispatch:Dispatch)=>{ //GET запрс за auth/me
+    // try{
+    //    const response = await headerApiAuth();
+    //     if (response.resultCode===0){
+    //         let {id,email,login} = response.data //деструктуризация
+    //         dispatch(setUserDataAC(id,email,login));
+    //     } else{
+    //         debugger
+    //         dispatch(changeFetchingAC(false))
+    //         dispatch(errorApiAC(response.messages[0]))
+    //     }
+    // }catch (e:any) {
+    //     console.log(e.message)
+    // }finally {
+    //     dispatch(initializedAC(true));
+    // }
+
     headerApiAuth()
         .then(data=>{
+            debugger
             if (data.resultCode===0){
                 let {id,email,login} = data.data //деструктуризация
                 dispatch(setUserDataAC(id,email,login));
-
             } else{
                 debugger
                 dispatch(changeFetchingAC(false))
                 dispatch(errorApiAC(data.messages[0]))
-
             }
-        })
+        }).finally(() =>{
+        dispatch(initializedAC(true));
+    })
 }
 
 export const  AuthLoginThunkCreator=(data:DataLoginType)=>(dispatch:Dispatch)=>{ //Post запрос логина

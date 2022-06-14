@@ -1,11 +1,12 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {AnyAction, applyMiddleware, combineReducers, createStore} from "redux";
 import {profileReducer} from "./profileReducer";
 import {dialogReducer} from "./dialogReducer";
 import {friendsReducer} from "./friendsReducer";
 import {ContactsReducer} from "./contactsReducer";
 import {authReducer} from "./authReducer";
-import thunkMiddleware  from 'redux-thunk'
+import thunkMiddleware, {ThunkDispatch} from 'redux-thunk'
 import {appReducer} from "./appReducer";
+import {useDispatch} from "react-redux";
 
 let rootReducer=combineReducers({//сюда поместим все редьюсеры
     profilePage:profileReducer,
@@ -18,6 +19,8 @@ let rootReducer=combineReducers({//сюда поместим все редьюс
 
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppDispatch=ThunkDispatch<AppRootStateType, any, AnyAction>;
+export const useAppDispatch=()=>useDispatch<AppDispatch>();
 
 export let store=createStore(rootReducer,applyMiddleware(thunkMiddleware));
 

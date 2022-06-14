@@ -49,7 +49,7 @@ export const Login = () => {
 
         })
          if (isAuth){ //если тру-то сделай редирект на страницу с тодолистами
-           return <Navigate to ={'/profile'}/>
+           return <Navigate to ={'/profile/userID'}/>
          }
 
     return <Grid container justifyContent={'center'}>

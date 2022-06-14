@@ -26,3 +26,41 @@ export const Navbar = (props:NavbarPropsType) => {
         </div>
     )
 }
+//app///////
+// useEffect(() => {
+//     initializeTC()
+// }, [])
+// if (!initialized){
+//     return <Loader/>
+// }
+// return (
+//     <BrowserRouter>
+//         <ThemeProvider theme={theme}>
+//             <div className="wrapper">
+//                 <Routes>
+//                     <Route path='/' element={<Header/>}>
+//                         <Route index element={<Navigate to={'/15849'}/>}/>
+//                         <Route path="dialogs" element={<Suspense fallback={<Loader/>}><MessagesContainer/></Suspense>}/>
+//                         <Route path=":userId" element={<Suspense fallback={<Loader/>}><MainContainer/></Suspense>}/>
+//                         <Route path="*" element={<Error404/>}/>
+//                         <Route path="users" element={<Suspense fallback={<Loader/>}><UsersContainer/></Suspense>}/>
+//                         <Route path="login" element={<Login/>}/>
+//                     </Route>
+//                 </Routes>
+//             </div>
+
+//////navbar//////
+// <ul className={finalClassName}>
+//     <li><NavLink to='/'
+//                  className={({isActive}) => `${s.link} ${isActive ? s.link_active : ''}`}>Home</NavLink>
+//     </li>
+//     <li><NavLink to='/dialogs'
+//                  className={({isActive}) => `${s.link} ${isActive ? s.link_active : ''}`}>Messages</NavLink>
+//     </li>
+//     <li><NavLink to='/users'
+//                  className={({isActive}) => `${s.link} ${isActive ? s.link_active : ''}`}>Friends</NavLink>
+//     </li>
+//     <li><NavLink to='/setting'
+//                  className={({isActive}) => `${s.link} ${isActive ? s.link_active : ''}`}>Settings</NavLink>
+//     </li>
+// </ul>

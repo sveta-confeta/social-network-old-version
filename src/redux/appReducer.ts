@@ -1,14 +1,19 @@
+import {Dispatch} from "redux";
+import {headerAuthThunkCreator} from "./authReducer";
+
 
 
 
 
 export type AuthType = {
   error:string | null,
+    initialized:boolean,
 }
 
 
 let initialState = {
   error:"error" || null,
+    initialized:false,
 
 }
 
@@ -20,21 +25,27 @@ export const appReducer = (state: AuthType = initialState, action: ActionType): 
         case 'ERROR-API':{
             return {...state, error:action.value}
         }
+        case 'INITIALIZED':{
+            return {...state, initialized:action.value}
+        }
         default:
             return state;
 
     }
 }
 
-type ActionType =ReturnType<typeof errorApiAC> ;
+type ActionType =ReturnType<typeof errorApiAC> | ReturnType<typeof initializedAC>;
 
 
 
 export const errorApiAC = (value:string|null) =>
     ({type: 'ERROR-API', value} as const);
 
+export const initializedAC = (value:boolean) =>
+    ({type: 'INITIALIZED', value} as const);
 
-//Thunk
+
+
 
 
 
